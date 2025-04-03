@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Coffee/Matcha Color Palette -->
+    <color name="light_beige">#FFF0D6</color>
+    <color name="sage_green">#91A287</color>
+    <color name="matcha_green">#658C5E</color>
+    <color name="medium_brown">#6F5840</color>
+    <color name="mocha_brown">#9E7C5F</color>
+    
+    <!-- Theme colors -->
+    <color name="primary">#658C5E</color>
+    <color name="primary_variant">#91A287</color>
+    <color name="secondary">#9E7C5F</color>
+    <color name="secondary_variant">#6F5840</color>
+    <color name="background">#FFF0D6</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="error">#B00020</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="on_background">#6F5840</color>
+    <color name="on_surface">#6F5840</color>
+    <color name="on_error">#FFFFFF</color>
+</resources>

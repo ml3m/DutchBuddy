@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.DutchBuddy" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_variant</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryVariant">@color/secondary_variant</item>
+        <item name="colorOnSecondary">@color/on_secondary</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/primary_variant</item>
+        <!-- Background colors -->
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorOnBackground">@color/on_background</item>
+        <!-- Surface colors -->
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <!-- Custom font -->
+        <item name="android:fontFamily">sans-serif</item>
+        <!-- Customize text appearance -->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.DutchBuddy.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.DutchBuddy.Headline2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.DutchBuddy.Body1</item>
+        <!-- Card style -->
+        <item name="cardViewStyle">@style/Widget.DutchBuddy.CardView</item>
+    </style>
+
+    <!-- Text styles -->
+    <style name="TextAppearance.DutchBuddy.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="fontFamily">sans-serif-light</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/medium_brown</item>
+    </style>
+
+    <style name="TextAppearance.DutchBuddy.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/medium_brown</item>
+    </style>
+
+    <style name="TextAppearance.DutchBuddy.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/medium_brown</item>
+    </style>
+
+    <!-- Card style -->
+    <style name="Widget.DutchBuddy.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardCornerRadius">12dp</item>
+    </style>
+</resources>
