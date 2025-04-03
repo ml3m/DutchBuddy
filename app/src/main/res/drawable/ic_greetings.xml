@@ -4,7 +4,88 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
+    
+    <!-- Background -->
+    <path
+        android:fillColor="@color/pine_green_light"
+        android:pathData="M0,0h24v24h-24z" />
+    
+    <!-- First character body -->
     <path
         android:fillColor="@color/soft_bronze_dark"
-        android:pathData="M16,4h-2c-1.1,0 -2,0.9 -2,2v5c0,1.1 0.9,2 2,2h2c1.1,0 2,-0.9 2,-2V6C18,4.9 17.1,4 16,4zM16,11h-2V6h2V11zM6,4C4.9,4 4,4.9 4,6v9c0,1.1 0.9,2 2,2h2c1.1,0 2,-0.9 2,-2v-2c0,-1.1 -0.9,-2 -2,-2H6V6h2c1.1,0 2,-0.9 2,-2v0c0,-1.1 -0.9,-2 -2,-2H6zM6,13h2v2H6V13zM22,15.46l-3.93,-1.57l-3.43,0.58l0,1.53l3.43,-0.58L22,16.99V15.46zM18.07,21l-3.43,-0.58l0,-1.53l3.43,0.58L22,18.01v1.53L18.07,21z" />
+        android:pathData="M6,10m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0" />
+    
+    <!-- First character face -->
+    <path
+        android:fillColor="@color/reddish_brown_light"
+        android:pathData="M5,9.5m-0.6,0a0.6,0.6 0,1 1,1.2 0a0.6,0.6 0,1 1,-1.2 0" />
+    <path
+        android:fillColor="@color/reddish_brown_light"
+        android:pathData="M7,9.5m-0.6,0a0.6,0.6 0,1 1,1.2 0a0.6,0.6 0,1 1,-1.2 0" />
+    <path
+        android:fillColor="@color/reddish_brown_light"
+        android:pathData="M5,11c0,0 1,1 2,0" 
+        android:strokeWidth="0.4"
+        android:strokeColor="@color/reddish_brown_light" />
+    
+    <!-- First character legs -->
+    <path
+        android:fillColor="@color/soft_bronze_dark"
+        android:pathData="M5,13L4,19L5.5,19L6,13z" />
+    <path
+        android:fillColor="@color/soft_bronze_dark"
+        android:pathData="M7,13L8,19L6.5,19L6,13z" />
+    
+    <!-- First character arm waving -->
+    <path
+        android:fillColor="@color/soft_bronze_dark"
+        android:pathData="M9,10L9.5,8L11,7.5L10.5,9.5L12,9L11.5,11L9,10z" />
+    
+    <!-- Second character body -->
+    <path
+        android:fillColor="@color/soft_bronze_light"
+        android:pathData="M18,10m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0" />
+    
+    <!-- Second character face -->
+    <path
+        android:fillColor="@color/reddish_brown_dark"
+        android:pathData="M17,9.5m-0.6,0a0.6,0.6 0,1 1,1.2 0a0.6,0.6 0,1 1,-1.2 0" />
+    <path
+        android:fillColor="@color/reddish_brown_dark"
+        android:pathData="M19,9.5m-0.6,0a0.6,0.6 0,1 1,1.2 0a0.6,0.6 0,1 1,-1.2 0" />
+    <path
+        android:fillColor="@color/reddish_brown_dark"
+        android:pathData="M17,11c0,0 1,1 2,0" 
+        android:strokeWidth="0.4"
+        android:strokeColor="@color/reddish_brown_dark" />
+    
+    <!-- Second character legs -->
+    <path
+        android:fillColor="@color/soft_bronze_light"
+        android:pathData="M17,13L16,19L17.5,19L18,13z" />
+    <path
+        android:fillColor="@color/soft_bronze_light"
+        android:pathData="M19,13L20,19L18.5,19L18,13z" />
+    
+    <!-- Second character arm waving -->
+    <path
+        android:fillColor="@color/soft_bronze_light"
+        android:pathData="M15,10L14.5,8L13,7.5L13.5,9.5L12,9L12.5,11L15,10z" />
+    
+    <!-- Speech bubble -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M10,6C10,5.45 10.45,5 11,5L13,5C13.55,5 14,5.45 14,6L14,7C14,7.55 13.55,8 13,8L12.5,8L12,9L11.5,8L11,8C10.45,8 10,7.55 10,7L10,6z" />
+    
+    <!-- Speech bubble text -->
+    <path
+        android:fillColor="@color/pine_green_dark"
+        android:pathData="M11.2,7l0.6,-1.4l0.6,1.4z"
+        android:strokeWidth="0.5"
+        android:strokeColor="@color/pine_green_dark" />
+    
+    <!-- Ground -->
+    <path
+        android:fillColor="@color/sage_green"
+        android:pathData="M0,20h24v4h-24z" />
 </vector> 

@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -16,6 +18,7 @@ import com.example.dutch_buddy.adapters.CategoryAdapter;
 import com.example.dutch_buddy.data.Category;
 import com.example.dutch_buddy.data.DatabaseHelper;
 import com.example.dutch_buddy.data.User;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
@@ -32,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView levelIndicator;
     private TextView streakIndicator;
     private ImageButton profileButton;
-    private Toolbar toolbar;
+    private MaterialToolbar toolbar;
     
     private int userId;
     private User currentUser;
@@ -74,8 +77,14 @@ public class MainActivity extends AppCompatActivity {
         profileSummaryCard.setOnClickListener(v -> navigateToProfile());
         profileButton.setOnClickListener(v -> navigateToProfile());
 
-        // Set up RecyclerView
-        categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // Set up RecyclerView with animations
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        categoriesRecyclerView.setLayoutManager(layoutManager);
+        
+        // Add layout animation for cards
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(
+                this, R.anim.layout_animation_slide_from_bottom);
+        categoriesRecyclerView.setLayoutAnimation(animation);
         
         // Initialize category list
         initCategoryList();
@@ -83,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
         // Set up adapter
         categoryAdapter = new CategoryAdapter(this, categoryList, userId);
         categoriesRecyclerView.setAdapter(categoryAdapter);
+        
+        // Run the animation
+        categoriesRecyclerView.scheduleLayoutAnimation();
     }
     
     @Override

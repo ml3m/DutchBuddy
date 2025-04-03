@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace = "com.example.dutch_buddy"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.dutch_buddy"
-        minSdk = 21
-        targetSdk = 35
+        minSdk = 24
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -26,8 +26,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        // Force using the same version of Kotlin stdlib
+        force("org.jetbrains.kotlin:kotlin-stdlib:1.8.22")
+        force("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22")
+        force("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22")
     }
 }
 
@@ -37,7 +46,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     
     // Material Design
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.9.0")
     
     // ConstraintLayout
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")

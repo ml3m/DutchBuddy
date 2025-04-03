@@ -10,8 +10,9 @@
     android:checkable="false"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="6dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="4dp"
+    android:stateListAnimator="@animator/card_elevation_animator"
     app:rippleColor="@color/pine_green_light">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,37 +22,40 @@
         <ImageView
             android:id="@+id/categoryHeaderImage"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="180dp"
             android:contentDescription="Category header image"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
+            android:padding="16dp"
+            android:background="@color/pine_green_light"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_greetings" />
 
         <View
+            android:id="@+id/categoryTitleBackground"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:alpha="0.5"
-            android:background="@color/black"
+            android:alpha="0.7"
+            android:background="@color/reddish_brown_dark"
             app:layout_constraintBottom_toBottomOf="@+id/categoryHeaderImage"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/categoryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-medium"
             android:textAppearance="?attr/textAppearanceHeadline1"
             android:textColor="@color/white"
-            android:textSize="32sp"
+            android:textSize="28sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/categoryTitleBackground"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/categoryTitleBackground"
             tools:text="Greetings" />
 
         <TextView
@@ -59,7 +63,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif"
@@ -81,7 +85,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/exploreButton"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
@@ -91,11 +95,12 @@
                 android:paddingVertical="12dp"
                 android:text="@string/explore"
                 android:textColor="@color/pine_green_dark"
-                app:cornerRadius="8dp"
+                android:stateListAnimator="@animator/button_press_animator"
+                app:cornerRadius="16dp"
                 app:strokeColor="@color/pine_green_dark"
                 app:strokeWidth="2dp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/startLearningButton"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="0dp"
@@ -105,14 +110,15 @@
                 android:backgroundTint="@color/pine_green_dark"
                 android:paddingVertical="12dp"
                 android:text="@string/start_learning"
-                app:cornerRadius="8dp" />
+                android:stateListAnimator="@animator/button_press_animator"
+                app:cornerRadius="16dp" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/unitCountText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/level_badge_background"
             android:drawablePadding="4dp"
@@ -120,7 +126,7 @@
             android:textColor="@color/white"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:drawableStartCompat="@drawable/ic_greetings"
+            app:drawableStartCompat="@drawable/ic_completed"
             app:drawableTint="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/categoryHeaderImage"

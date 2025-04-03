@@ -7,7 +7,7 @@
     android:background="@color/background"
     tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -18,36 +18,51 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@android:color/white">
 
-        <ImageView
-            android:id="@+id/toolbarLogo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="start"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/logo" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/app_name"
-            android:textColor="@android:color/white"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/toolbarLogo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="4dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/app_logo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/profileButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="View profile"
-            android:src="@android:drawable/ic_menu_myplaces"
-            android:tint="@android:color/white" />
-    </androidx.appcompat.widget.Toolbar>
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/app_name"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/profileButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="View profile"
+                android:src="@android:drawable/ic_menu_myplaces"
+                android:stateListAnimator="@animator/button_press_animator"
+                android:tint="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/profileSummaryCard"
@@ -58,6 +73,9 @@
         android:layout_marginEnd="16dp"
         android:clickable="true"
         android:focusable="true"
+        android:stateListAnimator="@animator/card_elevation_animator"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -73,10 +91,11 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceHeadline2"
                 android:textColor="@color/pine_green_dark"
-                android:textSize="18sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Hello, JohnDoe!" />
+                tools:text="Hello, mlem!" />
 
             <TextView
                 android:id="@+id/levelIndicator"
@@ -93,7 +112,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/userWelcomeText"
-                tools:text="Level 5" />
+                tools:text="Level 3" />
 
             <TextView
                 android:id="@+id/streakIndicator"
@@ -113,7 +132,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/levelIndicator"
                 app:layout_constraintStart_toEndOf="@+id/levelIndicator"
                 app:layout_constraintTop_toTopOf="@+id/levelIndicator"
-                tools:text="7 day streak" />
+                tools:text="2 day streak" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -126,6 +145,8 @@
         android:text="@string/categories"
         android:textAppearance="?attr/textAppearanceHeadline2"
         android:textColor="@color/reddish_brown_dark"
+        android:textSize="22sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileSummaryCard" />
 
@@ -134,7 +155,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:clipToPadding="false"
