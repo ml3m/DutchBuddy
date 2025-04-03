@@ -1,16 +1,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.DutchBuddy" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.DutchBuddy" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/matcha_green</item>
+        <item name="colorPrimaryVariant">@color/sage_green</item>
+        <item name="colorOnPrimary">@color/light_beige</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/mocha_brown</item>
+        <item name="colorSecondaryVariant">@color/medium_brown</item>
+        <item name="colorOnSecondary">@color/light_beige</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="android:statusBarColor">@color/medium_brown</item>
+        <!-- Background colors -->
+        <item name="android:colorBackground">@color/medium_brown</item>
+        <item name="colorOnBackground">@color/light_beige</item>
+        <!-- Surface colors -->
+        <item name="colorSurface">@color/sage_green</item>
+        <item name="colorOnSurface">@color/light_beige</item>
+        <!-- Custom font -->
+        <item name="android:fontFamily">sans-serif</item>
     </style>
 </resources>

@@ -31,14 +31,9 @@ public class FlashcardsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flashcards);
 
-        // Get the category from intent
-        if (getIntent().hasExtra("category")) {
-            category = getIntent().getStringExtra("category");
-        } else {
-            finish(); // If no category provided, close the activity
-            return;
-        }
-
+        // Get category name from intent
+        category = getIntent().getStringExtra("CATEGORY_NAME");
+        
         // Initialize views
         categoryTitle = findViewById(R.id.categoryTitle);
         flashcardsViewPager = findViewById(R.id.flashcardsViewPager);

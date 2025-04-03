@@ -36,6 +36,11 @@
             android:name=".QuizResultsActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
+            
+        <activity
+            android:name=".CompleteSentenceActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

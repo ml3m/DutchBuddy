@@ -36,36 +36,53 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/categoryIcon"
-            app:layout_constraintEnd_toStartOf="@+id/flashcardButton"
+            app:layout_constraintEnd_toStartOf="@+id/actionsLayout"
             app:layout_constraintStart_toEndOf="@+id/categoryIcon"
             app:layout_constraintTop_toTopOf="@+id/categoryIcon"
             tools:text="Greetings" />
 
-        <Button
-            android:id="@+id/flashcardButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        <LinearLayout
+            android:id="@+id/actionsLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="@string/flashcards"
-            android:textColor="@color/matcha_green"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/quizButton"
-            app:layout_constraintTop_toTopOf="parent"
-            app:strokeColor="@color/matcha_green" />
-
-        <Button
-            android:id="@+id/quizButton"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/matcha_green"
-            android:text="@string/quiz"
-            android:textSize="12sp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/flashcardButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/flashcards"
+                android:textColor="@color/matcha_green"
+                android:textSize="12sp"
+                app:strokeColor="@color/matcha_green" />
+
+            <Button
+                android:id="@+id/quizButton"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginBottom="4dp"
+                android:backgroundTint="@color/matcha_green"
+                android:text="@string/quiz"
+                android:textSize="12sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sentenceButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="@string/complete_sentence"
+                android:textColor="@color/mocha_brown"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_edit"
+                app:iconSize="16dp"
+                app:iconTint="@color/mocha_brown" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView> 

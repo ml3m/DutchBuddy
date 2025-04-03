@@ -7,17 +7,26 @@
     <color name="medium_brown">#6F5840</color>
     <color name="mocha_brown">#9E7C5F</color>
     
+    <!-- Standard Android colors (kept for compatibility) -->
+    <color name="purple_200">#BB86FC</color>
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_700">#3700B3</color>
+    <color name="teal_200">#03DAC5</color>
+    <color name="teal_700">#018786</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    
     <!-- Theme colors -->
-    <color name="primary">#658C5E</color>
-    <color name="primary_variant">#91A287</color>
-    <color name="secondary">#9E7C5F</color>
-    <color name="secondary_variant">#6F5840</color>
-    <color name="background">#FFF0D6</color>
-    <color name="surface">#FFFFFF</color>
+    <color name="primary">@color/matcha_green</color>
+    <color name="primary_variant">@color/sage_green</color>
+    <color name="secondary">@color/mocha_brown</color>
+    <color name="secondary_variant">@color/medium_brown</color>
+    <color name="background">@color/light_beige</color>
+    <color name="surface">@color/white</color>
     <color name="error">#B00020</color>
-    <color name="on_primary">#FFFFFF</color>
-    <color name="on_secondary">#FFFFFF</color>
-    <color name="on_background">#6F5840</color>
-    <color name="on_surface">#6F5840</color>
-    <color name="on_error">#FFFFFF</color>
+    <color name="on_primary">@color/white</color>
+    <color name="on_secondary">@color/white</color>
+    <color name="on_background">@color/medium_brown</color>
+    <color name="on_surface">@color/medium_brown</color>
+    <color name="on_error">@color/white</color>
 </resources>

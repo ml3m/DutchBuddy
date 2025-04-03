@@ -5,6 +5,7 @@
     <string name="categories">Categories</string>
     <string name="flashcards">Flashcards</string>
     <string name="quiz">Quiz</string>
+    <string name="back_button">Back</string>
     
     <!-- Category names -->
     <string name="category_greetings">Greetings</string>
@@ -26,6 +27,11 @@
     <string name="percent_score">Score: %1$d%%</string>
     <string name="return_to_categories">Return to Categories</string>
     <string name="start_new_quiz">Start New Quiz</string>
+    
+    <!-- Complete the Sentence -->
+    <string name="complete_sentence">Complete the sentence</string>
+    <string name="submit_answer">Submit Answer</string>
+    <string name="hint_fill_blank">Fill in the blank</string>
     
     <!-- Content Descriptions -->
     <string name="category_icon">Category icon</string>

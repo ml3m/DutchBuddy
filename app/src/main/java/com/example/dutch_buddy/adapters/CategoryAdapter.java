@@ -12,10 +12,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dutch_buddy.CompleteSentenceActivity;
 import com.example.dutch_buddy.FlashcardsActivity;
 import com.example.dutch_buddy.QuizActivity;
 import com.example.dutch_buddy.R;
 import com.example.dutch_buddy.data.Category;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
@@ -23,6 +25,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     private Context context;
     private List<Category> categoryList;
+    
+    // Constant for intent extra key
+    private static final String EXTRA_CATEGORY_NAME = "CATEGORY_NAME";
 
     public CategoryAdapter(Context context, List<Category> categoryList) {
         this.context = context;
@@ -46,13 +51,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         // Set click listeners for buttons
         holder.flashcardButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, FlashcardsActivity.class);
-            intent.putExtra("category", category.getName());
+            intent.putExtra(EXTRA_CATEGORY_NAME, category.getName());
             context.startActivity(intent);
         });
         
         holder.quizButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, QuizActivity.class);
-            intent.putExtra("category", category.getName());
+            intent.putExtra(EXTRA_CATEGORY_NAME, category.getName());
+            context.startActivity(intent);
+        });
+        
+        holder.sentenceButton.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CompleteSentenceActivity.class);
+            intent.putExtra(EXTRA_CATEGORY_NAME, category.getName());
             context.startActivity(intent);
         });
     }
@@ -67,6 +78,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         TextView categoryName;
         Button flashcardButton;
         Button quizButton;
+        MaterialButton sentenceButton;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,6 +86,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             categoryName = itemView.findViewById(R.id.categoryName);
             flashcardButton = itemView.findViewById(R.id.flashcardButton);
             quizButton = itemView.findViewById(R.id.quizButton);
+            sentenceButton = itemView.findViewById(R.id.sentenceButton);
         }
     }
 } 

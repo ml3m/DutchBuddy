@@ -67,6 +67,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         addVocabularyItem(db, "Greetings", "Hoe gaat het?", "How are you?");
         addVocabularyItem(db, "Greetings", "Het gaat goed", "I am fine");
         addVocabularyItem(db, "Greetings", "Dank je", "Thank you");
+        addVocabularyItem(db, "Greetings", "Alsjeblieft", "Please/You're welcome");
+        addVocabularyItem(db, "Greetings", "Sorry", "Sorry");
+        addVocabularyItem(db, "Greetings", "Ik heet", "My name is");
+        addVocabularyItem(db, "Greetings", "Aangenaam", "Nice to meet you");
+        addVocabularyItem(db, "Greetings", "Tot morgen", "See you tomorrow");
+        addVocabularyItem(db, "Greetings", "Welkom", "Welcome");
+        addVocabularyItem(db, "Greetings", "Prettige dag", "Have a nice day");
 
         // Food
         addVocabularyItem(db, "Food", "Brood", "Bread");
@@ -77,6 +84,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         addVocabularyItem(db, "Food", "Appel", "Apple");
         addVocabularyItem(db, "Food", "Boterham", "Sandwich");
         addVocabularyItem(db, "Food", "Melk", "Milk");
+        addVocabularyItem(db, "Food", "Suiker", "Sugar");
+        addVocabularyItem(db, "Food", "Zout", "Salt");
+        addVocabularyItem(db, "Food", "Peper", "Pepper");
+        addVocabularyItem(db, "Food", "Vlees", "Meat");
+        addVocabularyItem(db, "Food", "Vis", "Fish");
+        addVocabularyItem(db, "Food", "Rijst", "Rice");
+        addVocabularyItem(db, "Food", "Pasta", "Pasta");
+        addVocabularyItem(db, "Food", "Aardappel", "Potato");
+        addVocabularyItem(db, "Food", "Groente", "Vegetable");
+        addVocabularyItem(db, "Food", "Fruit", "Fruit");
+        addVocabularyItem(db, "Food", "Soep", "Soup");
+        addVocabularyItem(db, "Food", "Salade", "Salad");
+        addVocabularyItem(db, "Food", "Friet", "French fries");
+        addVocabularyItem(db, "Food", "Stroopwafel", "Stroopwafel");
 
         // Travel
         addVocabularyItem(db, "Travel", "Trein", "Train");
@@ -87,6 +108,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         addVocabularyItem(db, "Travel", "Kaartje", "Ticket");
         addVocabularyItem(db, "Travel", "Hotel", "Hotel");
         addVocabularyItem(db, "Travel", "Paspoort", "Passport");
+        addVocabularyItem(db, "Travel", "Bagage", "Luggage");
+        addVocabularyItem(db, "Travel", "Links", "Left");
+        addVocabularyItem(db, "Travel", "Rechts", "Right");
+        addVocabularyItem(db, "Travel", "Rechtdoor", "Straight ahead");
+        addVocabularyItem(db, "Travel", "Waar is", "Where is");
+        addVocabularyItem(db, "Travel", "Ver", "Far");
+        addVocabularyItem(db, "Travel", "Dichtbij", "Near");
+        addVocabularyItem(db, "Travel", "Centrum", "City center");
+        addVocabularyItem(db, "Travel", "Luchthaven", "Airport");
+        addVocabularyItem(db, "Travel", "Fiets", "Bicycle");
+        addVocabularyItem(db, "Travel", "Tram", "Tram");
+        addVocabularyItem(db, "Travel", "Auto", "Car");
+        addVocabularyItem(db, "Travel", "Taxi", "Taxi");
+        addVocabularyItem(db, "Travel", "Boot", "Boat");
     }
 
     private void addVocabularyItem(SQLiteDatabase db, String category, String dutchWord, String englishTranslation) {
@@ -115,9 +150,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                int id = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
-                String dutchWord = cursor.getString(cursor.getColumnIndex(COLUMN_DUTCH_WORD));
-                String englishTranslation = cursor.getString(cursor.getColumnIndex(COLUMN_ENGLISH_TRANSLATION));
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID));
+                String dutchWord = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DUTCH_WORD));
+                String englishTranslation = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ENGLISH_TRANSLATION));
 
                 VocabularyItem item = new VocabularyItem(id, category, dutchWord, englishTranslation);
                 vocabularyList.add(item);
@@ -138,7 +173,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                String category = cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY));
+                String category = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY));
                 categories.add(category);
             } while (cursor.moveToNext());
         }

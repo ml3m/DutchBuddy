@@ -7,6 +7,19 @@
     android:background="@color/background"
     tools:context=".QuizActivity">
 
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/back_button"
+        android:src="@drawable/ic_back"
+        android:tint="@color/medium_brown"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/quizCategoryTitle"
         android:layout_width="wrap_content"
@@ -24,7 +37,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         app:cardBackgroundColor="@color/surface"
         app:cardCornerRadius="12dp"
@@ -77,29 +90,34 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <RadioGroup
-        android:id="@+id/answersRadioGroup"
+    <LinearLayout
+        android:id="@+id/answersContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/questionCard">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardOption1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
             app:cardCornerRadius="8dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:strokeWidth="0dp">
 
-            <RadioButton
+            <TextView
                 android:id="@+id/answerOption1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/surface"
+                android:background="?attr/selectableItemBackground"
                 android:padding="16dp"
                 android:textColor="@color/medium_brown"
                 android:textSize="16sp"
@@ -107,17 +125,21 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardOption2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
             app:cardCornerRadius="8dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:strokeWidth="0dp">
 
-            <RadioButton
+            <TextView
                 android:id="@+id/answerOption2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/surface"
+                android:background="?attr/selectableItemBackground"
                 android:padding="16dp"
                 android:textColor="@color/medium_brown"
                 android:textSize="16sp"
@@ -125,17 +147,21 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardOption3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
             app:cardCornerRadius="8dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:strokeWidth="0dp">
 
-            <RadioButton
+            <TextView
                 android:id="@+id/answerOption3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/surface"
+                android:background="?attr/selectableItemBackground"
                 android:padding="16dp"
                 android:textColor="@color/medium_brown"
                 android:textSize="16sp"
@@ -143,23 +169,27 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardOption4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
             app:cardCornerRadius="8dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:strokeWidth="0dp">
 
-            <RadioButton
+            <TextView
                 android:id="@+id/answerOption4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/surface"
+                android:background="?attr/selectableItemBackground"
                 android:padding="16dp"
                 android:textColor="@color/medium_brown"
                 android:textSize="16sp"
                 tools:text="How are you?" />
         </com.google.android.material.card.MaterialCardView>
-    </RadioGroup>
+    </LinearLayout>
 
     <Button
         android:id="@+id/submitButton"
