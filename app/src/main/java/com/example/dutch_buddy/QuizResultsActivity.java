@@ -4,20 +4,30 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.dutch_buddy.data.DatabaseHelper;
+import com.example.dutch_buddy.data.User;
+import com.google.android.material.card.MaterialCardView;
 
 public class QuizResultsActivity extends AppCompatActivity {
 
     private TextView categoryNameResult;
     private TextView correctAnswersText;
     private TextView scorePercentText;
+    private MaterialCardView levelUpCard;
+    private TextView levelUpText;
     private Button newQuizButton;
     private Button returnToCategoriesButton;
     
     private String category;
     private int correctAnswers;
     private int totalQuestions;
+    private int userId;
+    private DatabaseHelper databaseHelper;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +39,18 @@ public class QuizResultsActivity extends AppCompatActivity {
             category = getIntent().getStringExtra("CATEGORY_NAME");
             correctAnswers = getIntent().getIntExtra("correctAnswers", 0);
             totalQuestions = getIntent().getIntExtra("totalQuestions", 0);
+            userId = getIntent().getIntExtra("USER_ID", -1);
         } else {
             finish(); // If required data is missing, close the activity
+            return;
+        }
+        
+        // Initialize database helper and load user
+        databaseHelper = DatabaseHelper.getInstance(this);
+        user = databaseHelper.getUser(userId);
+        
+        if (user == null) {
+            finish();
             return;
         }
         
@@ -38,6 +58,8 @@ public class QuizResultsActivity extends AppCompatActivity {
         categoryNameResult = findViewById(R.id.categoryNameResult);
         correctAnswersText = findViewById(R.id.correctAnswersText);
         scorePercentText = findViewById(R.id.scorePercentText);
+        levelUpCard = findViewById(R.id.levelUpCard);
+        levelUpText = findViewById(R.id.levelUpText);
         newQuizButton = findViewById(R.id.newQuizButton);
         returnToCategoriesButton = findViewById(R.id.returnToCategoriesButton);
         
@@ -48,14 +70,16 @@ public class QuizResultsActivity extends AppCompatActivity {
         newQuizButton.setOnClickListener(v -> {
             Intent quizIntent = new Intent(QuizResultsActivity.this, QuizActivity.class);
             quizIntent.putExtra("CATEGORY_NAME", category);
+            quizIntent.putExtra("USER_ID", userId);
             startActivity(quizIntent);
             finish();
         });
         
         returnToCategoriesButton.setOnClickListener(v -> {
-            // Go back to the categories screen (MainActivity)
+            // Go back to the main activity
             Intent mainIntent = new Intent(QuizResultsActivity.this, MainActivity.class);
             mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            mainIntent.putExtra("USER_ID", userId);
             startActivity(mainIntent);
             finish();
         });
@@ -77,6 +101,27 @@ public class QuizResultsActivity extends AppCompatActivity {
             scorePercentText.setTextColor(getResources().getColor(R.color.sage_green, null));
         } else {
             scorePercentText.setTextColor(getResources().getColor(R.color.mocha_brown, null));
+        }
+        
+        // Check if user has leveled up
+        displayLevelUpInfo();
+    }
+    
+    private void displayLevelUpInfo() {
+        // Get user's current level
+        int currentLevel = user.getLevel();
+        int xpEarned = correctAnswers * 10; // 10 XP per correct answer
+        
+        // Simple calculation to check if the user would have leveled up
+        int oldLevel = (user.getExperiencePoints() - xpEarned) / 100 + 1;
+        
+        if (currentLevel > oldLevel) {
+            // User leveled up - show level up card
+            levelUpCard.setVisibility(View.VISIBLE);
+            levelUpText.setText("Congratulations! You reached Level " + currentLevel);
+        } else {
+            // User didn't level up - hide the card
+            levelUpCard.setVisibility(View.GONE);
         }
     }
 } 

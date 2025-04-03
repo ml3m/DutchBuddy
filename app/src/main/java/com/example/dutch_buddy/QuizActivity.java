@@ -42,6 +42,7 @@ public class QuizActivity extends AppCompatActivity {
     private int correctAnswers = 0;
     private int totalQuestions = 10; // Max number of questions
     private MaterialCardView selectedCardOption = null;
+    private int userId = -1;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,14 @@ public class QuizActivity extends AppCompatActivity {
         
         // Get category from intent
         category = getIntent().getStringExtra("CATEGORY_NAME");
+        userId = getIntent().getIntExtra("USER_ID", -1);
+        
+        // Validate user ID
+        if (userId == -1) {
+            Toast.makeText(this, "User information missing", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
         
         // Initialize views
         quizCategoryTitle = findViewById(R.id.quizCategoryTitle);
@@ -112,11 +121,15 @@ public class QuizActivity extends AppCompatActivity {
                 // Show the next question
                 showQuestion(currentQuestionIndex);
             } else {
+                // Update user stats
+                updateUserStatistics();
+                
                 // All questions answered, show results
                 Intent resultsIntent = new Intent(QuizActivity.this, QuizResultsActivity.class);
                 resultsIntent.putExtra("CATEGORY_NAME", category);
                 resultsIntent.putExtra("correctAnswers", correctAnswers);
                 resultsIntent.putExtra("totalQuestions", quizItems.size());
+                resultsIntent.putExtra("USER_ID", userId);
                 startActivity(resultsIntent);
                 finish();
             }
@@ -126,6 +139,11 @@ public class QuizActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> {
             onBackPressed();
         });
+    }
+    
+    private void updateUserStatistics() {
+        // Update user stats with results from this quiz
+        databaseHelper.updateUserStats(userId, correctAnswers, quizItems.size());
     }
     
     private void setupCardClickListeners() {

@@ -75,6 +75,53 @@
                 tools:text="80%" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
+    
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/levelUpCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/sage_green"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resultsCard"
+        tools:visibility="visible">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/levelUpIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="Level up"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/btn_star_big_on"
+                app:tint="@android:color/white" />
+
+            <TextView
+                android:id="@+id/levelUpText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/levelUpIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/levelUpIcon"
+                app:layout_constraintTop_toTopOf="@+id/levelUpIcon"
+                tools:text="Congratulations! You reached Level 3" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <Button
         android:id="@+id/newQuizButton"

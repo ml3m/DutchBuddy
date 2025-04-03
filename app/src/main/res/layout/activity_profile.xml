@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".ProfileActivity">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/back_button"
+        android:src="@drawable/ic_back"
+        android:tint="@color/medium_brown"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/profileTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Your Profile"
+        android:textAppearance="?attr/textAppearanceHeadline1"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/profileCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        app:cardBackgroundColor="@color/surface"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileTitle">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="24dp">
+
+            <ImageView
+                android:id="@+id/userIconLarge"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:contentDescription="User profile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/ic_menu_myplaces" />
+
+            <TextView
+                android:id="@+id/usernameLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:textColor="@color/medium_brown"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/userIconLarge"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="JohnDoe" />
+
+            <TextView
+                android:id="@+id/levelText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/sage_green"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/userIconLarge"
+                app:layout_constraintTop_toBottomOf="@+id/usernameLabel"
+                tools:text="Level 5" />
+                
+            <ProgressBar
+                android:id="@+id/levelProgressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:progressTint="@color/matcha_green"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userIconLarge" />
+
+            <TextView
+                android:id="@+id/levelProgressText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/medium_brown"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@+id/levelProgressBar"
+                app:layout_constraintStart_toStartOf="@+id/levelProgressBar"
+                app:layout_constraintTop_toBottomOf="@+id/levelProgressBar"
+                tools:text="75 / 100 XP" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/statsCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        app:cardBackgroundColor="@color/surface"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileCard">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/statisticsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Statistics"
+                android:textColor="@color/medium_brown"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/streakLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Daily streak:"
+                android:textColor="@color/medium_brown"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/statisticsTitle" />
+
+            <TextView
+                android:id="@+id/streakText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/matcha_green"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/streakLabel"
+                app:layout_constraintStart_toEndOf="@+id/streakLabel"
+                app:layout_constraintTop_toTopOf="@+id/streakLabel"
+                tools:text="7 days" />
+
+            <TextView
+                android:id="@+id/quizTakenLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Quizzes taken:"
+                android:textColor="@color/medium_brown"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/streakLabel" />
+
+            <TextView
+                android:id="@+id/quizTakenText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/matcha_green"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/quizTakenLabel"
+                app:layout_constraintStart_toEndOf="@+id/quizTakenLabel"
+                app:layout_constraintTop_toTopOf="@+id/quizTakenLabel"
+                tools:text="25" />
+
+            <TextView
+                android:id="@+id/accuracyLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Accuracy:"
+                android:textColor="@color/medium_brown"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/quizTakenLabel" />
+
+            <TextView
+                android:id="@+id/accuracyText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/matcha_green"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/accuracyLabel"
+                app:layout_constraintStart_toEndOf="@+id/accuracyLabel"
+                app:layout_constraintTop_toTopOf="@+id/accuracyLabel"
+                tools:text="85.5%" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <Button
+        android:id="@+id/logoutButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="32dp"
+        android:text="Log Out"
+        android:textColor="@android:color/holo_red_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="@android:color/holo_red_light" />
+
+</androidx.constraintlayout.widget.ConstraintLayout> 

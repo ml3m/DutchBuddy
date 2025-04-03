@@ -25,13 +25,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     private Context context;
     private List<Category> categoryList;
+    private int userId;
     
     // Constant for intent extra key
     private static final String EXTRA_CATEGORY_NAME = "CATEGORY_NAME";
+    private static final String EXTRA_USER_ID = "USER_ID";
 
-    public CategoryAdapter(Context context, List<Category> categoryList) {
+    public CategoryAdapter(Context context, List<Category> categoryList, int userId) {
         this.context = context;
         this.categoryList = categoryList;
+        this.userId = userId;
     }
 
     @NonNull
@@ -52,18 +55,21 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.flashcardButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, FlashcardsActivity.class);
             intent.putExtra(EXTRA_CATEGORY_NAME, category.getName());
+            intent.putExtra(EXTRA_USER_ID, userId);
             context.startActivity(intent);
         });
         
         holder.quizButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, QuizActivity.class);
             intent.putExtra(EXTRA_CATEGORY_NAME, category.getName());
+            intent.putExtra(EXTRA_USER_ID, userId);
             context.startActivity(intent);
         });
         
         holder.sentenceButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, CompleteSentenceActivity.class);
             intent.putExtra(EXTRA_CATEGORY_NAME, category.getName());
+            intent.putExtra(EXTRA_USER_ID, userId);
             context.startActivity(intent);
         });
     }
