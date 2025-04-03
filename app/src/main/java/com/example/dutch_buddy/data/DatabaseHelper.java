@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.dutch_buddy.R;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -15,11 +17,13 @@ import java.util.Set;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "dutch_buddy.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // Table names
     public static final String TABLE_VOCABULARY = "vocabulary";
     public static final String TABLE_USERS = "users";
+    public static final String TABLE_UNITS = "units";
+    public static final String TABLE_LESSONS = "lessons";
 
     // Vocabulary Column names
     public static final String COLUMN_ID = "id";
@@ -37,6 +41,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_TOTAL_QUESTIONS = "total_questions";
     public static final String COLUMN_LAST_LOGIN = "last_login";
     public static final String COLUMN_DAILY_STREAK = "daily_streak";
+    
+    // Units Column names
+    public static final String COLUMN_UNIT_ID = "id";
+    public static final String COLUMN_UNIT_NAME = "name";
+    public static final String COLUMN_UNIT_DESCRIPTION = "description";
+    public static final String COLUMN_UNIT_CATEGORY = "category";
+    public static final String COLUMN_UNIT_ICON = "icon_resource_id";
+    public static final String COLUMN_UNIT_UNLOCKED = "unlocked";
+    public static final String COLUMN_UNIT_COMPLETED = "completed";
+    
+    // Lessons Column names
+    public static final String COLUMN_LESSON_ID = "id";
+    public static final String COLUMN_LESSON_NAME = "name";
+    public static final String COLUMN_LESSON_DESCRIPTION = "description";
+    public static final String COLUMN_LESSON_UNIT_ID = "unit_id";
+    public static final String COLUMN_LESSON_ICON = "icon_resource_id";
+    public static final String COLUMN_LESSON_UNLOCKED = "unlocked";
+    public static final String COLUMN_LESSON_COMPLETED = "completed";
+    public static final String COLUMN_LESSON_TYPE = "lesson_type";
 
     // Create vocabulary table query
     private static final String CREATE_TABLE_VOCABULARY = "CREATE TABLE " + TABLE_VOCABULARY + " ("
@@ -56,6 +79,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_TOTAL_QUESTIONS + " INTEGER DEFAULT 0, "
             + COLUMN_LAST_LOGIN + " INTEGER DEFAULT 0, "
             + COLUMN_DAILY_STREAK + " INTEGER DEFAULT 0);";
+            
+    // Create units table query
+    private static final String CREATE_TABLE_UNITS = "CREATE TABLE " + TABLE_UNITS + " ("
+            + COLUMN_UNIT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_UNIT_NAME + " TEXT NOT NULL, "
+            + COLUMN_UNIT_DESCRIPTION + " TEXT NOT NULL, "
+            + COLUMN_UNIT_CATEGORY + " TEXT NOT NULL, "
+            + COLUMN_UNIT_ICON + " INTEGER NOT NULL, "
+            + COLUMN_UNIT_UNLOCKED + " INTEGER DEFAULT 0, "
+            + COLUMN_UNIT_COMPLETED + " INTEGER DEFAULT 0);";
+            
+    // Create lessons table query
+    private static final String CREATE_TABLE_LESSONS = "CREATE TABLE " + TABLE_LESSONS + " ("
+            + COLUMN_LESSON_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_LESSON_NAME + " TEXT NOT NULL, "
+            + COLUMN_LESSON_DESCRIPTION + " TEXT NOT NULL, "
+            + COLUMN_LESSON_UNIT_ID + " INTEGER NOT NULL, "
+            + COLUMN_LESSON_ICON + " INTEGER NOT NULL, "
+            + COLUMN_LESSON_UNLOCKED + " INTEGER DEFAULT 0, "
+            + COLUMN_LESSON_COMPLETED + " INTEGER DEFAULT 0, "
+            + COLUMN_LESSON_TYPE + " TEXT NOT NULL);";
 
     private static DatabaseHelper instance;
     private Context context;
@@ -76,7 +120,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_VOCABULARY);
         db.execSQL(CREATE_TABLE_USERS);
+        db.execSQL(CREATE_TABLE_UNITS);
+        db.execSQL(CREATE_TABLE_LESSONS);
         populateInitialData(db);
+        populateUnitsAndLessons(db);
     }
 
     @Override
@@ -84,6 +131,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (oldVersion < 2) {
             // Add users table in version 2
             db.execSQL(CREATE_TABLE_USERS);
+        }
+        if (oldVersion < 3) {
+            // Add units and lessons tables in version 3
+            db.execSQL(CREATE_TABLE_UNITS);
+            db.execSQL(CREATE_TABLE_LESSONS);
+            populateUnitsAndLessons(db);
         }
     }
 
@@ -395,5 +448,238 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         
         // Update last login date
         user.setLastLoginDate(System.currentTimeMillis());
+    }
+
+    private void populateUnitsAndLessons(SQLiteDatabase db) {
+        // Travel category units
+        addUnit(db, "Places", "Learn vocabulary for common places", "Travel", 
+                R.drawable.ic_travel, 1, 0);
+        addUnit(db, "Transportation", "Learn vocabulary for different transportation methods", "Travel", 
+                R.drawable.ic_travel, 0, 0);
+        addUnit(db, "Directions", "Learn vocabulary for asking and giving directions", "Travel", 
+                R.drawable.ic_travel, 0, 0);
+        addUnit(db, "Accommodations", "Learn vocabulary for hotels and accommodations", "Travel", 
+                R.drawable.ic_travel, 0, 0);
+        
+        // Food category units
+        addUnit(db, "Basic Food", "Learn vocabulary for common foods", "Food", 
+                R.drawable.ic_food, 1, 0);
+        addUnit(db, "Drinks", "Learn vocabulary for beverages", "Food", 
+                R.drawable.ic_food, 0, 0);
+        addUnit(db, "Restaurant", "Learn vocabulary for ordering at restaurants", "Food", 
+                R.drawable.ic_food, 0, 0);
+        addUnit(db, "Cooking", "Learn vocabulary for cooking and recipes", "Food", 
+                R.drawable.ic_food, 0, 0);
+        
+        // Greetings category units
+        addUnit(db, "Basic Greetings", "Learn basic greetings and introductions", "Greetings", 
+                R.drawable.ic_greetings, 1, 0);
+        addUnit(db, "Formal Greetings", "Learn formal greetings for professional settings", "Greetings", 
+                R.drawable.ic_greetings, 0, 0);
+        
+        // Add lessons for Travel - Places unit
+        addLesson(db, "Common Places", "Learn vocabulary for common places", 1, 
+                R.drawable.ic_travel, 1, 0, "VOCAB");
+        addLesson(db, "Places Quiz", "Test your knowledge of places", 1, 
+                R.drawable.ic_travel, 0, 0, "QUIZ");
+        addLesson(db, "Places Sentences", "Practice sentences about places", 1, 
+                R.drawable.ic_travel, 0, 0, "SENTENCE");
+        
+        // Add lessons for Food - Basic Food unit
+        addLesson(db, "Common Foods", "Learn vocabulary for common foods", 5, 
+                R.drawable.ic_food, 1, 0, "VOCAB");
+        addLesson(db, "Foods Quiz", "Test your knowledge of foods", 5, 
+                R.drawable.ic_food, 0, 0, "QUIZ");
+        addLesson(db, "Food Sentences", "Practice sentences about food", 5, 
+                R.drawable.ic_food, 0, 0, "SENTENCE");
+        
+        // Add lessons for Greetings - Basic Greetings unit
+        addLesson(db, "Basic Greetings", "Learn basic greeting vocabulary", 9, 
+                R.drawable.ic_greetings, 1, 0, "VOCAB");
+        addLesson(db, "Greetings Quiz", "Test your knowledge of greetings", 9, 
+                R.drawable.ic_greetings, 0, 0, "QUIZ");
+        addLesson(db, "Greeting Sentences", "Practice sentences with greetings", 9, 
+                R.drawable.ic_greetings, 0, 0, "SENTENCE");
+    }
+    
+    private void addUnit(SQLiteDatabase db, String name, String description, String category, 
+                        int iconResId, int unlocked, int completed) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_UNIT_NAME, name);
+        values.put(COLUMN_UNIT_DESCRIPTION, description);
+        values.put(COLUMN_UNIT_CATEGORY, category);
+        values.put(COLUMN_UNIT_ICON, iconResId);
+        values.put(COLUMN_UNIT_UNLOCKED, unlocked);
+        values.put(COLUMN_UNIT_COMPLETED, completed);
+        db.insert(TABLE_UNITS, null, values);
+    }
+    
+    private void addLesson(SQLiteDatabase db, String name, String description, int unitId, 
+                          int iconResId, int unlocked, int completed, String lessonType) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_LESSON_NAME, name);
+        values.put(COLUMN_LESSON_DESCRIPTION, description);
+        values.put(COLUMN_LESSON_UNIT_ID, unitId);
+        values.put(COLUMN_LESSON_ICON, iconResId);
+        values.put(COLUMN_LESSON_UNLOCKED, unlocked);
+        values.put(COLUMN_LESSON_COMPLETED, completed);
+        values.put(COLUMN_LESSON_TYPE, lessonType);
+        db.insert(TABLE_LESSONS, null, values);
+    }
+    
+    public List<Unit> getUnitsByCategory(String category) {
+        List<Unit> unitList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        
+        String[] columns = {
+                COLUMN_UNIT_ID, 
+                COLUMN_UNIT_NAME, 
+                COLUMN_UNIT_DESCRIPTION, 
+                COLUMN_UNIT_CATEGORY, 
+                COLUMN_UNIT_ICON, 
+                COLUMN_UNIT_UNLOCKED, 
+                COLUMN_UNIT_COMPLETED
+        };
+        
+        String selection = COLUMN_UNIT_CATEGORY + " = ?";
+        String[] selectionArgs = {category};
+        
+        Cursor cursor = db.query(TABLE_UNITS, columns, selection, selectionArgs, null, null, null);
+        
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_UNIT_ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UNIT_NAME));
+                String description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UNIT_DESCRIPTION));
+                int iconResId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_UNIT_ICON));
+                boolean unlocked = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_UNIT_UNLOCKED)) == 1;
+                boolean completed = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_UNIT_COMPLETED)) == 1;
+                
+                Unit unit = new Unit(id, name, description, category, iconResId, unlocked, completed);
+                
+                // Get lessons for this unit
+                List<Lesson> lessons = getLessonsByUnitId(id);
+                unit.setLessons(lessons);
+                
+                unitList.add(unit);
+            } while (cursor.moveToNext());
+        }
+        
+        cursor.close();
+        db.close();
+        return unitList;
+    }
+    
+    public List<Lesson> getLessonsByUnitId(int unitId) {
+        List<Lesson> lessonList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        
+        String[] columns = {
+                COLUMN_LESSON_ID, 
+                COLUMN_LESSON_NAME, 
+                COLUMN_LESSON_DESCRIPTION, 
+                COLUMN_LESSON_UNIT_ID, 
+                COLUMN_LESSON_ICON, 
+                COLUMN_LESSON_UNLOCKED, 
+                COLUMN_LESSON_COMPLETED,
+                COLUMN_LESSON_TYPE
+        };
+        
+        String selection = COLUMN_LESSON_UNIT_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(unitId)};
+        
+        Cursor cursor = db.query(TABLE_LESSONS, columns, selection, selectionArgs, null, null, null);
+        
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_LESSON_ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LESSON_NAME));
+                String description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LESSON_DESCRIPTION));
+                int iconResId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_LESSON_ICON));
+                boolean unlocked = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_LESSON_UNLOCKED)) == 1;
+                boolean completed = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_LESSON_COMPLETED)) == 1;
+                String lessonType = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LESSON_TYPE));
+                
+                Lesson lesson = new Lesson(id, name, description, unitId, iconResId, unlocked, completed, lessonType);
+                lessonList.add(lesson);
+            } while (cursor.moveToNext());
+        }
+        
+        cursor.close();
+        return lessonList;
+    }
+    
+    public void updateUnitProgress(int unitId, boolean completed) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_UNIT_COMPLETED, completed ? 1 : 0);
+        
+        String whereClause = COLUMN_UNIT_ID + " = ?";
+        String[] whereArgs = {String.valueOf(unitId)};
+        
+        db.update(TABLE_UNITS, values, whereClause, whereArgs);
+        db.close();
+    }
+    
+    public void updateLessonProgress(int lessonId, boolean completed) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_LESSON_COMPLETED, completed ? 1 : 0);
+        
+        String whereClause = COLUMN_LESSON_ID + " = ?";
+        String[] whereArgs = {String.valueOf(lessonId)};
+        
+        db.update(TABLE_LESSONS, values, whereClause, whereArgs);
+        db.close();
+    }
+    
+    public void unlockNextUnit(String category, int currentUnitId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_UNIT_UNLOCKED, 1);
+        
+        // Find the next unit in sequence
+        String selectNextUnitQuery = "SELECT " + COLUMN_UNIT_ID + " FROM " + TABLE_UNITS +
+                " WHERE " + COLUMN_UNIT_CATEGORY + " = ? AND " + COLUMN_UNIT_ID + " > ? " +
+                " ORDER BY " + COLUMN_UNIT_ID + " ASC LIMIT 1";
+        
+        String[] selectionArgs = {category, String.valueOf(currentUnitId)};
+        Cursor cursor = db.rawQuery(selectNextUnitQuery, selectionArgs);
+        
+        if (cursor.moveToFirst()) {
+            int nextUnitId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_UNIT_ID));
+            String whereClause = COLUMN_UNIT_ID + " = ?";
+            String[] whereArgs = {String.valueOf(nextUnitId)};
+            
+            db.update(TABLE_UNITS, values, whereClause, whereArgs);
+        }
+        
+        cursor.close();
+        db.close();
+    }
+    
+    public void unlockNextLesson(int unitId, int currentLessonId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_LESSON_UNLOCKED, 1);
+        
+        // Find the next lesson in sequence
+        String selectNextLessonQuery = "SELECT " + COLUMN_LESSON_ID + " FROM " + TABLE_LESSONS +
+                " WHERE " + COLUMN_LESSON_UNIT_ID + " = ? AND " + COLUMN_LESSON_ID + " > ? " +
+                " ORDER BY " + COLUMN_LESSON_ID + " ASC LIMIT 1";
+        
+        String[] selectionArgs = {String.valueOf(unitId), String.valueOf(currentLessonId)};
+        Cursor cursor = db.rawQuery(selectNextLessonQuery, selectionArgs);
+        
+        if (cursor.moveToFirst()) {
+            int nextLessonId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_LESSON_ID));
+            String whereClause = COLUMN_LESSON_ID + " = ?";
+            String[] whereArgs = {String.valueOf(nextLessonId)};
+            
+            db.update(TABLE_LESSONS, values, whereClause, whereArgs);
+        }
+        
+        cursor.close();
+        db.close();
     }
 } 

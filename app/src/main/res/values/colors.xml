@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Coffee/Matcha Color Palette -->
-    <color name="light_beige">#FFF0D6</color>
-    <color name="sage_green">#91A287</color>
-    <color name="matcha_green">#658C5E</color>
-    <color name="medium_brown">#6F5840</color>
-    <color name="mocha_brown">#9E7C5F</color>
-    
     <!-- Standard Android colors (kept for compatibility) -->
     <color name="purple_200">#BB86FC</color>
     <color name="purple_500">#6200EE</color>
@@ -16,17 +9,38 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     
+    <!-- App color palette -->
+    <color name="matcha_green">#76AC64</color>
+    <color name="sage_green">#93C088</color>
+    <color name="light_sage">#B6D7A8</color>
+    <color name="mocha_brown">#A44A3F</color>
+    <color name="medium_brown">#6E4E37</color>
+    <color name="cream">#FFF2D6</color>
+    <color name="light_beige">#FFF0D6</color>
+    <color name="background">#F0F6EA</color>
+    <color name="surface">#FFFFFF</color>
+    
     <!-- Theme colors -->
     <color name="primary">@color/matcha_green</color>
     <color name="primary_variant">@color/sage_green</color>
     <color name="secondary">@color/mocha_brown</color>
     <color name="secondary_variant">@color/medium_brown</color>
-    <color name="background">@color/light_beige</color>
-    <color name="surface">@color/white</color>
     <color name="error">#B00020</color>
     <color name="on_primary">@color/white</color>
     <color name="on_secondary">@color/white</color>
     <color name="on_background">@color/medium_brown</color>
     <color name="on_surface">@color/medium_brown</color>
     <color name="on_error">@color/white</color>
+    
+    <!-- Learning path UI colors -->
+    <color name="lesson_background">#F5F9F1</color>
+    <color name="disabled_gray">#E0E0E0</color>
+    <color name="completed_green">#58A95A</color>
+    <color name="dark_text">#333333</color>
+    <color name="medium_text">#666666</color>
+    <color name="light_text">#999999</color>
+    <color name="progress_track">#D2EAC2</color>
+    <color name="progress_thumb">#58A95A</color>
+    <color name="unit_connector">#B6D7A8</color>
+    <color name="locked_overlay">#66000000</color>
 </resources>

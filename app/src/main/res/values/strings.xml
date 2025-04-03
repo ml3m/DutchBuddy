@@ -1,38 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Dutch Buddy</string>
+    <string name="action_settings">Settings</string>
     
-    <!-- Navigation -->
+    <!-- Login and User Strings -->
+    <string name="login">Login</string>
+    <string name="create_user">Create User</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="new_user">New user? Create account</string>
+    <string name="welcome_back">Welcome back!</string>
+    <string name="welcome_message">Welcome to Dutch Buddy, your companion for learning Dutch!</string>
+    <string name="profile">Profile</string>
+    <string name="logout">Logout</string>
+    
+    <!-- Category Strings -->
     <string name="categories">Categories</string>
+    <string name="category_icon">Category Icon</string>
+    <string name="greetings">Greetings</string>
+    <string name="food">Food</string>
+    <string name="travel">Travel</string>
+    
+    <!-- Activity Types -->
     <string name="flashcards">Flashcards</string>
     <string name="quiz">Quiz</string>
+    <string name="complete_sentence">Complete Sentence</string>
+    
+    <!-- Navigation -->
     <string name="back_button">Back</string>
     
-    <!-- Category names -->
-    <string name="category_greetings">Greetings</string>
-    <string name="category_food">Food</string>
-    <string name="category_travel">Travel</string>
-    
-    <!-- Flashcards -->
+    <!-- Flashcard Strings -->
+    <string name="flip_card">Flip Card</string>
+    <string name="next_card">Next</string>
+    <string name="previous_card">Previous</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="tap_to_flip">Tap to flip</string>
     
-    <!-- Quiz -->
-    <string name="select_answer">Select the correct translation:</string>
-    <string name="check_answer">Check Answer</string>
-    <string name="next_question">Next Question</string>
-    <string name="finish_quiz">Finish Quiz</string>
+    <!-- Quiz Strings -->
+    <string name="question_count">Question %1$d of %2$d</string>
+    <string name="question_format">What is the Dutch word for \"%1$s\"?</string>
+    <string name="submit_answer">Submit</string>
     <string name="quiz_results">Quiz Results</string>
-    <string name="correct_answers">Correct Answers: %1$d out of %2$d</string>
-    <string name="percent_score">Score: %1$d%%</string>
-    <string name="return_to_categories">Return to Categories</string>
+    <string name="correct_answers">Correct Answers: %1$d/%2$d</string>
+    <string name="accuracy">Accuracy: %1$.1f%%</string>
+    <string name="finish">Finish</string>
+    <string name="finish_quiz">Finish Quiz</string>
+    <string name="retry">Retry</string>
+    <string name="correct">Correct!</string>
+    <string name="incorrect">Incorrect!</string>
+    <string name="correct_answer_was">The correct answer was: %1$s</string>
+    <string name="select_answer">Select the correct translation:</string>
     <string name="start_new_quiz">Start New Quiz</string>
+    <string name="return_to_categories">Return to Categories</string>
+    <string name="percent_score">Score: %1$d%%</string>
     
-    <!-- Complete the Sentence -->
-    <string name="complete_sentence">Complete the sentence</string>
-    <string name="submit_answer">Submit Answer</string>
-    <string name="hint_fill_blank">Fill in the blank</string>
+    <!-- Complete Sentence Strings -->
+    <string name="complete_sentence_instructions">Complete the sentence by dragging the words to the correct position.</string>
+    <string name="sentence_placeholder">_ _ _ _ _</string>
+    <string name="check_answer">Check Answer</string>
+    <string name="sentence_completed">Well done!</string>
     
-    <!-- Content Descriptions -->
-    <string name="category_icon">Category icon</string>
+    <!-- Learning Path Strings -->
+    <string name="learning_path">Learning Path</string>
+    <string name="unit">Unit</string>
+    <string name="lessons">Lessons</string>
+    <string name="unit_icon">Unit Icon</string>
+    <string name="lesson_icon">Lesson Icon</string>
+    <string name="locked_content">Locked Content</string>
+    <string name="completed_lesson">Completed Lesson</string>
+    <string name="start">START</string>
+    <string name="continue_learning">Continue</string>
+    <string name="progress">Progress</string>
+    <string name="vocabulary">Vocabulary</string>
+    <string name="practice">Practice</string>
 </resources>

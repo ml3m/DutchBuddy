@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.Toolbar;
+
 import com.example.dutch_buddy.adapters.CategoryAdapter;
 import com.example.dutch_buddy.data.Category;
 import com.example.dutch_buddy.data.DatabaseHelper;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView levelIndicator;
     private TextView streakIndicator;
     private ImageButton profileButton;
+    private Toolbar toolbar;
     
     private int userId;
     private User currentUser;
@@ -55,6 +58,11 @@ public class MainActivity extends AppCompatActivity {
         levelIndicator = findViewById(R.id.levelIndicator);
         streakIndicator = findViewById(R.id.streakIndicator);
         profileButton = findViewById(R.id.profileButton);
+        toolbar = findViewById(R.id.toolbar);
+        
+        // Set up toolbar
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Initialize database helper
         databaseHelper = DatabaseHelper.getInstance(this);

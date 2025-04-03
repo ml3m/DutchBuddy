@@ -3,57 +3,71 @@
     <!-- Base application theme. -->
     <style name="Theme.DutchBuddy" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryVariant">@color/primary_variant</item>
-        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorPrimary">@color/matcha_green</item>
+        <item name="colorPrimaryVariant">@color/sage_green</item>
+        <item name="colorOnPrimary">@android:color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondary</item>
-        <item name="colorSecondaryVariant">@color/secondary_variant</item>
-        <item name="colorOnSecondary">@color/on_secondary</item>
+        <item name="colorSecondary">@color/mocha_brown</item>
+        <item name="colorSecondaryVariant">@color/medium_brown</item>
+        <item name="colorOnSecondary">@android:color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/primary_variant</item>
+        <item name="android:statusBarColor">@color/matcha_green</item>
         <!-- Background colors -->
-        <item name="android:colorBackground">@color/background</item>
-        <item name="colorOnBackground">@color/on_background</item>
-        <!-- Surface colors -->
+        <item name="android:windowBackground">@color/background</item>
         <item name="colorSurface">@color/surface</item>
-        <item name="colorOnSurface">@color/on_surface</item>
-        <!-- Custom font -->
-        <item name="android:fontFamily">sans-serif</item>
-        <!-- Customize text appearance -->
+        <item name="colorOnSurface">@color/dark_text</item>
+        <!-- Customize your theme here. -->
+        <item name="materialCardViewStyle">@style/CardView.DutchBuddy</item>
+        <item name="buttonStyle">@style/Button.DutchBuddy</item>
         <item name="textAppearanceHeadline1">@style/TextAppearance.DutchBuddy.Headline1</item>
         <item name="textAppearanceHeadline2">@style/TextAppearance.DutchBuddy.Headline2</item>
         <item name="textAppearanceBody1">@style/TextAppearance.DutchBuddy.Body1</item>
-        <!-- Card style -->
-        <item name="cardViewStyle">@style/Widget.DutchBuddy.CardView</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.DutchBuddy.Body2</item>
     </style>
-
-    <!-- Text styles -->
+    
+    <style name="CardView.DutchBuddy" parent="Widget.MaterialComponents.CardView">
+        <item name="cardElevation">4dp</item>
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="rippleColor">@color/light_sage</item>
+    </style>
+    
+    <style name="Button.DutchBuddy" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="backgroundTint">@color/matcha_green</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+    
     <style name="TextAppearance.DutchBuddy.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
-        <item name="fontFamily">sans-serif-light</item>
-        <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textSize">28sp</item>
-        <item name="android:textColor">@color/medium_brown</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textStyle">bold</item>
     </style>
-
+    
     <style name="TextAppearance.DutchBuddy.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
-        <item name="fontFamily">sans-serif-medium</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">24sp</item>
-        <item name="android:textColor">@color/medium_brown</item>
+        <item name="android:textColor">@color/dark_text</item>
+        <item name="android:textStyle">bold</item>
     </style>
-
+    
     <style name="TextAppearance.DutchBuddy.Body1" parent="TextAppearance.MaterialComponents.Body1">
         <item name="fontFamily">sans-serif</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/medium_brown</item>
+        <item name="android:textColor">@color/medium_text</item>
     </style>
-
-    <!-- Card style -->
-    <style name="Widget.DutchBuddy.CardView" parent="Widget.MaterialComponents.CardView">
-        <item name="cardBackgroundColor">@color/surface</item>
-        <item name="cardElevation">4dp</item>
-        <item name="cardCornerRadius">12dp</item>
+    
+    <style name="TextAppearance.DutchBuddy.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/medium_text</item>
     </style>
 </resources>

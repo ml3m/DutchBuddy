@@ -10,10 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dutch_buddy.CompleteSentenceActivity;
 import com.example.dutch_buddy.FlashcardsActivity;
+import com.example.dutch_buddy.LearningPathActivity;
 import com.example.dutch_buddy.QuizActivity;
 import com.example.dutch_buddy.R;
 import com.example.dutch_buddy.data.Category;
@@ -51,6 +53,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.categoryIcon.setImageResource(category.getIconResId());
         holder.categoryName.setText(category.getName());
         
+        // Make entire card clickable to open learning path
+        holder.cardView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, LearningPathActivity.class);
+            intent.putExtra(EXTRA_CATEGORY_NAME, category.getName());
+            intent.putExtra(EXTRA_USER_ID, userId);
+            context.startActivity(intent);
+        });
+        
         // Set click listeners for buttons
         holder.flashcardButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, FlashcardsActivity.class);
@@ -80,6 +90,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     }
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
+        CardView cardView;
         ImageView categoryIcon;
         TextView categoryName;
         Button flashcardButton;
@@ -88,6 +99,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
+            cardView = (CardView) itemView;
             categoryIcon = itemView.findViewById(R.id.categoryIcon);
             categoryName = itemView.findViewById(R.id.categoryName);
             flashcardButton = itemView.findViewById(R.id.flashcardButton);
