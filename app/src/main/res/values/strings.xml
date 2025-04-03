@@ -21,6 +21,8 @@
     <string name="greetings">Greetings</string>
     <string name="food">Food</string>
     <string name="travel">Travel</string>
+    <string name="explore">Explore</string>
+    <string name="start_learning">Start Learning</string>
     
     <!-- Activity Types -->
     <string name="flashcards">Flashcards</string>

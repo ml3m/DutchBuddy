@@ -43,8 +43,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User user = userList.get(position);
         
-        holder.usernameText.setText(user.getUsername());
-        holder.levelText.setText("Level " + user.getLevel() + " • Streak: " + user.getDailyStreak() + " days");
+        holder.userName.setText(user.getUsername());
+        holder.userStats.setText("Level " + user.getLevel() + " • Streak: " + user.getDailyStreak() + " days");
         
         // Click listener for the whole item
         holder.itemView.setOnClickListener(v -> {
@@ -61,15 +61,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
     public static class UserViewHolder extends RecyclerView.ViewHolder {
         ImageView userIcon;
-        TextView usernameText;
-        TextView levelText;
+        TextView userName;
+        TextView userStats;
         MaterialCardView cardView;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             userIcon = itemView.findViewById(R.id.userIcon);
-            usernameText = itemView.findViewById(R.id.usernameText);
-            levelText = itemView.findViewById(R.id.levelText);
+            userName = itemView.findViewById(R.id.userName);
+            userStats = itemView.findViewById(R.id.userStats);
             cardView = (MaterialCardView) itemView;
         }
     }

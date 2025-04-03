@@ -43,7 +43,7 @@
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:backgroundTint="@color/matcha_green"
+            android:backgroundTint="@color/pine_green_dark"
             android:text="@string/start"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"

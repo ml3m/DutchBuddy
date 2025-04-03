@@ -4,12 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginBottom="8dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="@color/surface"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,36 +20,48 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:contentDescription="User profile"
+            android:src="@android:drawable/ic_menu_myplaces"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_myplaces" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/usernameText"
+            android:id="@+id/userName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:textColor="@color/medium_brown"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/reddish_brown_dark"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/levelText"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/userStats"
+            app:layout_constraintEnd_toStartOf="@+id/deleteUserButton"
             app:layout_constraintStart_toEndOf="@+id/userIcon"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="JohnDoe" />
+            tools:text="User Name" />
 
         <TextView
-            android:id="@+id/levelText"
+            android:id="@+id/userStats"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/medium_brown"
+            android:textColor="@color/reddish_brown_dark"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/userName"
+            app:layout_constraintStart_toStartOf="@+id/userName"
+            app:layout_constraintTop_toBottomOf="@+id/userName"
+            tools:text="Level 5" />
+
+        <ImageButton
+            android:id="@+id/deleteUserButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Delete user"
+            android:src="@android:drawable/ic_menu_delete"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/userIcon"
-            app:layout_constraintTop_toBottomOf="@+id/usernameText"
-            tools:text="Level 5 • Streak: 7 days" />
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView> 

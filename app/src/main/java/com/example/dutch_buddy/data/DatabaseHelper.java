@@ -682,4 +682,67 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
     }
+
+    public int getLessonIdByNameAndCategory(String lessonName, String category) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int lessonId = -1;
+        
+        String query = "SELECT l." + COLUMN_LESSON_ID + " FROM " + TABLE_LESSONS + " l " +
+                       "JOIN " + TABLE_UNITS + " u ON l." + COLUMN_LESSON_UNIT_ID + " = u." + COLUMN_UNIT_ID + " " +
+                       "WHERE l." + COLUMN_LESSON_NAME + " = ? AND u." + COLUMN_UNIT_CATEGORY + " = ?";
+        
+        Cursor cursor = db.rawQuery(query, new String[]{lessonName, category});
+        
+        if (cursor.moveToFirst()) {
+            lessonId = cursor.getInt(0);
+        }
+        
+        cursor.close();
+        db.close();
+        return lessonId;
+    }
+    
+    public int getNextLessonId(int currentLessonId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int nextLessonId = -1;
+        
+        // Get the unit ID for the current lesson
+        String unitQuery = "SELECT " + COLUMN_LESSON_UNIT_ID + " FROM " + TABLE_LESSONS + 
+                          " WHERE " + COLUMN_LESSON_ID + " = ?";
+        Cursor unitCursor = db.rawQuery(unitQuery, new String[]{String.valueOf(currentLessonId)});
+        
+        if (unitCursor.moveToFirst()) {
+            int unitId = unitCursor.getInt(0);
+            unitCursor.close();
+            
+            // Get the next lesson in the same unit
+            String nextLessonQuery = "SELECT " + COLUMN_LESSON_ID + " FROM " + TABLE_LESSONS + 
+                                    " WHERE " + COLUMN_LESSON_UNIT_ID + " = ? AND " + 
+                                    COLUMN_LESSON_ID + " > ? ORDER BY " + COLUMN_LESSON_ID + 
+                                    " ASC LIMIT 1";
+            Cursor nextLessonCursor = db.rawQuery(nextLessonQuery, 
+                                                 new String[]{String.valueOf(unitId), 
+                                                              String.valueOf(currentLessonId)});
+            
+            if (nextLessonCursor.moveToFirst()) {
+                nextLessonId = nextLessonCursor.getInt(0);
+            }
+            nextLessonCursor.close();
+        }
+        
+        db.close();
+        return nextLessonId;
+    }
+    
+    public void updateLessonUnlockStatus(int lessonId, boolean unlocked) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_LESSON_UNLOCKED, unlocked ? 1 : 0);
+        
+        String whereClause = COLUMN_LESSON_ID + " = ?";
+        String[] whereArgs = {String.valueOf(lessonId)};
+        
+        db.update(TABLE_LESSONS, values, whereClause, whereArgs);
+        db.close();
+    }
 } 

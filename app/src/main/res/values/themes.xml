@@ -3,15 +3,15 @@
     <!-- Base application theme. -->
     <style name="Theme.DutchBuddy" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/matcha_green</item>
-        <item name="colorPrimaryVariant">@color/sage_green</item>
+        <item name="colorPrimary">@color/pine_green_dark</item>
+        <item name="colorPrimaryVariant">@color/pine_green_light</item>
         <item name="colorOnPrimary">@android:color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/mocha_brown</item>
-        <item name="colorSecondaryVariant">@color/medium_brown</item>
+        <item name="colorSecondary">@color/soft_bronze_dark</item>
+        <item name="colorSecondaryVariant">@color/reddish_brown_dark</item>
         <item name="colorOnSecondary">@android:color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/matcha_green</item>
+        <item name="android:statusBarColor">@color/pine_green_dark</item>
         <!-- Background colors -->
         <item name="android:windowBackground">@color/background</item>
         <item name="colorSurface">@color/surface</item>
@@ -29,12 +29,12 @@
         <item name="cardElevation">4dp</item>
         <item name="cardCornerRadius">16dp</item>
         <item name="cardBackgroundColor">@color/surface</item>
-        <item name="rippleColor">@color/light_sage</item>
+        <item name="rippleColor">@color/pine_green_light</item>
     </style>
     
     <style name="Button.DutchBuddy" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">@android:color/white</item>
-        <item name="backgroundTint">@color/matcha_green</item>
+        <item name="backgroundTint">@color/pine_green_dark</item>
         <item name="cornerRadius">8dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:paddingStart">16dp</item>

@@ -16,7 +16,7 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/back_button"
         android:src="@drawable/ic_back"
-        android:tint="@color/medium_brown"
+        android:tint="@color/reddish_brown_dark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,7 +65,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:textColor="@color/medium_brown"
+                android:textColor="@color/reddish_brown_dark"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/sage_green"
+                android:textColor="@color/pine_green_light"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/userIconLarge"
@@ -92,7 +92,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:progressTint="@color/matcha_green"
+                android:progressTint="@color/pine_green_dark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/userIconLarge" />
@@ -102,7 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:textColor="@color/medium_brown"
+                android:textColor="@color/reddish_brown_dark"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/levelProgressBar"
                 app:layout_constraintStart_toStartOf="@+id/levelProgressBar"
@@ -135,7 +135,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Statistics"
-                android:textColor="@color/medium_brown"
+                android:textColor="@color/reddish_brown_dark"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -147,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Daily streak:"
-                android:textColor="@color/medium_brown"
+                android:textColor="@color/reddish_brown_dark"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/statisticsTitle" />
 
@@ -156,7 +156,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:textColor="@color/matcha_green"
+                android:textColor="@color/pine_green_dark"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/streakLabel"
                 app:layout_constraintStart_toEndOf="@+id/streakLabel"
@@ -169,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Quizzes taken:"
-                android:textColor="@color/medium_brown"
+                android:textColor="@color/reddish_brown_dark"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/streakLabel" />
 
@@ -178,7 +178,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:textColor="@color/matcha_green"
+                android:textColor="@color/pine_green_dark"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/quizTakenLabel"
                 app:layout_constraintStart_toEndOf="@+id/quizTakenLabel"
@@ -191,7 +191,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Accuracy:"
-                android:textColor="@color/medium_brown"
+                android:textColor="@color/reddish_brown_dark"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/quizTakenLabel" />
 
@@ -200,12 +200,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:textColor="@color/matcha_green"
+                android:textColor="@color/pine_green_dark"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/accuracyLabel"
                 app:layout_constraintStart_toEndOf="@+id/accuracyLabel"
                 app:layout_constraintTop_toTopOf="@+id/accuracyLabel"
-                tools:text="85.5%" />
+                tools:text="85%" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 

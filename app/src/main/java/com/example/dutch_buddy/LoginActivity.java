@@ -83,9 +83,8 @@ public class LoginActivity extends AppCompatActivity implements UserAdapter.OnUs
         // Create dialog for adding a new user
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_create_user, null);
-        EditText usernameInput = dialogView.findViewById(R.id.usernameInput);
-        Button confirmButton = dialogView.findViewById(R.id.confirmButton);
-        Button cancelButton = dialogView.findViewById(R.id.cancelButton);
+        EditText usernameInput = dialogView.findViewById(R.id.nameEditText);
+        Button confirmButton = dialogView.findViewById(R.id.createButton);
 
         builder.setView(dialogView);
         final AlertDialog dialog = builder.create();
@@ -119,8 +118,6 @@ public class LoginActivity extends AppCompatActivity implements UserAdapter.OnUs
                 Toast.makeText(LoginActivity.this, "Failed to create user", Toast.LENGTH_SHORT).show();
             }
         });
-
-        cancelButton.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
     }

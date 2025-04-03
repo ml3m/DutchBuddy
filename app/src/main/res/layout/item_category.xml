@@ -2,94 +2,128 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/categoryCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginBottom="16dp"
+    android:checkable="false"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="@color/surface"
     app:cardCornerRadius="16dp"
-    app:cardElevation="4dp"
-    app:rippleColor="@color/light_sage">
+    app:cardElevation="6dp"
+    app:rippleColor="@color/pine_green_light">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/categoryIcon"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="@drawable/circular_icon_background"
-            android:contentDescription="@string/category_icon"
-            android:padding="12dp"
+            android:id="@+id/categoryHeaderImage"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:contentDescription="Category header image"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/ic_greetings" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:alpha="0.5"
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/categoryHeaderImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
-            android:id="@+id/categoryName"
+            android:id="@+id/categoryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:textAppearance="?attr/textAppearanceHeadline1"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Greetings" />
+
+        <TextView
+            android:id="@+id/categoryDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
-            android:textColor="@color/dark_text"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/categoryIcon"
-            app:layout_constraintEnd_toStartOf="@+id/actionsLayout"
-            app:layout_constraintStart_toEndOf="@+id/categoryIcon"
-            app:layout_constraintTop_toTopOf="@+id/categoryIcon"
-            tools:text="Greetings" />
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/pine_green_dark"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categoryHeaderImage"
+            tools:text="Learn common Dutch greetings and introductions" />
 
         <LinearLayout
-            android:id="@+id/actionsLayout"
-            android:layout_width="wrap_content"
+            android:id="@+id/buttonContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
+            android:padding="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintStart_toStartOf="parent">
 
             <Button
-                android:id="@+id/flashcardButton"
+                android:id="@+id/exploreButton"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/flashcards"
-                android:textAllCaps="false"
-                android:textColor="@color/matcha_green"
-                android:textSize="12sp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_weight="1"
+                android:paddingVertical="12dp"
+                android:text="@string/explore"
+                android:textColor="@color/pine_green_dark"
                 app:cornerRadius="8dp"
-                app:strokeColor="@color/matcha_green" />
+                app:strokeColor="@color/pine_green_dark"
+                app:strokeWidth="2dp" />
 
             <Button
-                android:id="@+id/quizButton"
+                android:id="@+id/startLearningButton"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:layout_marginBottom="8dp"
-                android:backgroundTint="@color/matcha_green"
-                android:text="@string/quiz"
-                android:textAllCaps="false"
-                android:textSize="12sp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/pine_green_dark"
+                android:paddingVertical="12dp"
+                android:text="@string/start_learning"
                 app:cornerRadius="8dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/sentenceButton"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:text="@string/complete_sentence"
-                android:textAllCaps="false"
-                android:textColor="@color/mocha_brown"
-                android:textSize="12sp"
-                app:icon="@drawable/ic_edit"
-                app:iconSize="16dp"
-                app:iconTint="@color/mocha_brown" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/unitCountText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/level_badge_background"
+            android:drawablePadding="4dp"
+            android:padding="8dp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_greetings"
+            app:drawableTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categoryHeaderImage"
+            tools:text="3 Units" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView> 

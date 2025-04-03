@@ -11,12 +11,21 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/matcha_green"
+        android:background="@color/pine_green_dark"
         android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@android:color/white">
+
+        <ImageView
+            android:id="@+id/toolbarLogo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="start"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/logo" />
 
         <TextView
             android:id="@+id/titleTextView"
@@ -63,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceHeadline2"
-                android:textColor="@color/matcha_green"
+                android:textColor="@color/pine_green_dark"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -116,6 +125,7 @@
         android:layout_marginTop="24dp"
         android:text="@string/categories"
         android:textAppearance="?attr/textAppearanceHeadline2"
+        android:textColor="@color/reddish_brown_dark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileSummaryCard" />
 

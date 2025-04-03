@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.chip.Chip xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/wordChip"
     style="@style/Widget.MaterialComponents.Chip.Action"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -8,7 +10,8 @@
     android:checkable="false"
     android:clickable="true"
     android:focusable="true"
-    android:textColor="@color/medium_brown"
+    android:textColor="@color/reddish_brown_dark"
     app:chipBackgroundColor="@color/surface"
-    app:chipStrokeColor="@color/matcha_green"
-    app:chipStrokeWidth="1dp" /> 
+    app:chipStrokeColor="@color/pine_green_dark"
+    app:chipStrokeWidth="1dp"
+    tools:text="jou" /> 

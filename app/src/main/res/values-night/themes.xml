@@ -2,21 +2,21 @@
     <!-- Base application theme. -->
     <style name="Theme.DutchBuddy" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/matcha_green</item>
-        <item name="colorPrimaryVariant">@color/sage_green</item>
-        <item name="colorOnPrimary">@color/light_beige</item>
+        <item name="colorPrimary">@color/pine_green_light</item>
+        <item name="colorPrimaryVariant">@color/pine_green_dark</item>
+        <item name="colorOnPrimary">@color/reddish_brown_dark</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/mocha_brown</item>
-        <item name="colorSecondaryVariant">@color/medium_brown</item>
-        <item name="colorOnSecondary">@color/light_beige</item>
+        <item name="colorSecondary">@color/soft_bronze_light</item>
+        <item name="colorSecondaryVariant">@color/soft_bronze_dark</item>
+        <item name="colorOnSecondary">@color/reddish_brown_dark</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/medium_brown</item>
+        <item name="android:statusBarColor">@color/reddish_brown_dark</item>
         <!-- Background colors -->
-        <item name="android:colorBackground">@color/medium_brown</item>
-        <item name="colorOnBackground">@color/light_beige</item>
+        <item name="android:colorBackground">@color/reddish_brown_dark</item>
+        <item name="colorOnBackground">@color/reddish_brown_light</item>
         <!-- Surface colors -->
-        <item name="colorSurface">@color/sage_green</item>
-        <item name="colorOnSurface">@color/light_beige</item>
+        <item name="colorSurface">@color/pine_green_dark</item>
+        <item name="colorOnSurface">@color/white</item>
         <!-- Custom font -->
         <item name="android:fontFamily">sans-serif</item>
     </style>

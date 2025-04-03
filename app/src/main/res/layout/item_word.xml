@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    android:checkable="true"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="@color/light_beige"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="2dp"
-    app:checkedIcon="@null">
+    app:cardBackgroundColor="@color/reddish_brown_light"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
 
-    <TextView
-        android:id="@+id/wordText"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
-        android:textColor="@color/medium_brown"
-        android:textSize="16sp"
-        tools:text="hallo" />
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="8dp">
 
-</com.google.android.material.card.MaterialCardView> 
+        <TextView
+            android:id="@+id/wordText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/reddish_brown_dark"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="jou" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView> 

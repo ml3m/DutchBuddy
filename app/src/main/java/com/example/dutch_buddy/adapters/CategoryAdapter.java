@@ -50,8 +50,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         Category category = categoryList.get(position);
         
-        holder.categoryIcon.setImageResource(category.getIconResId());
-        holder.categoryName.setText(category.getName());
+        holder.categoryHeaderImage.setImageResource(category.getIconResId());
+        holder.categoryTitle.setText(category.getName());
         
         // Make entire card clickable to open learning path
         holder.cardView.setOnClickListener(v -> {
@@ -62,26 +62,22 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         });
         
         // Set click listeners for buttons
-        holder.flashcardButton.setOnClickListener(v -> {
+        holder.exploreButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, FlashcardsActivity.class);
             intent.putExtra(EXTRA_CATEGORY_NAME, category.getName());
             intent.putExtra(EXTRA_USER_ID, userId);
             context.startActivity(intent);
         });
         
-        holder.quizButton.setOnClickListener(v -> {
+        holder.startLearningButton.setOnClickListener(v -> {
             Intent intent = new Intent(context, QuizActivity.class);
             intent.putExtra(EXTRA_CATEGORY_NAME, category.getName());
             intent.putExtra(EXTRA_USER_ID, userId);
             context.startActivity(intent);
         });
         
-        holder.sentenceButton.setOnClickListener(v -> {
-            Intent intent = new Intent(context, CompleteSentenceActivity.class);
-            intent.putExtra(EXTRA_CATEGORY_NAME, category.getName());
-            intent.putExtra(EXTRA_USER_ID, userId);
-            context.startActivity(intent);
-        });
+        holder.categoryDescription.setText(category.getDescription());
+        holder.unitCountText.setText(String.valueOf(category.getUnitCount()));
     }
 
     @Override
@@ -91,20 +87,22 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
-        ImageView categoryIcon;
-        TextView categoryName;
-        Button flashcardButton;
-        Button quizButton;
-        MaterialButton sentenceButton;
+        ImageView categoryHeaderImage;
+        TextView categoryTitle;
+        Button exploreButton;
+        Button startLearningButton;
+        TextView categoryDescription;
+        TextView unitCountText;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
-            cardView = (CardView) itemView;
-            categoryIcon = itemView.findViewById(R.id.categoryIcon);
-            categoryName = itemView.findViewById(R.id.categoryName);
-            flashcardButton = itemView.findViewById(R.id.flashcardButton);
-            quizButton = itemView.findViewById(R.id.quizButton);
-            sentenceButton = itemView.findViewById(R.id.sentenceButton);
+            cardView = itemView.findViewById(R.id.categoryCard);
+            categoryHeaderImage = itemView.findViewById(R.id.categoryHeaderImage);
+            categoryTitle = itemView.findViewById(R.id.categoryTitle);
+            categoryDescription = itemView.findViewById(R.id.categoryDescription);
+            exploreButton = itemView.findViewById(R.id.exploreButton);
+            startLearningButton = itemView.findViewById(R.id.startLearningButton);
+            unitCountText = itemView.findViewById(R.id.unitCountText);
         }
     }
 } 
