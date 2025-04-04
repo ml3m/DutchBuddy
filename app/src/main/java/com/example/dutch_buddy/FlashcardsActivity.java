@@ -30,6 +30,7 @@ public class FlashcardsActivity extends AppCompatActivity {
     
     private String category;
     private int userId;
+    private int lessonId;
     private List<VocabularyItem> vocabularyItems;
     private FlashcardAdapter flashcardAdapter;
     private DatabaseHelper databaseHelper;
@@ -39,9 +40,10 @@ public class FlashcardsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flashcards);
 
-        // Get category name from intent
+        // Get parameters from intent
         category = getIntent().getStringExtra("CATEGORY_NAME");
         userId = getIntent().getIntExtra("USER_ID", -1);
+        lessonId = getIntent().getIntExtra("LESSON_ID", -1);
         
         // Initialize views
         categoryTitle = findViewById(R.id.categoryTitle);
@@ -51,14 +53,18 @@ public class FlashcardsActivity extends AppCompatActivity {
         tapToFlipText = findViewById(R.id.tapToFlipText);
         completeButton = findViewById(R.id.completeButton);
 
-        // Set the category title
-        categoryTitle.setText(category);
-
         // Initialize database helper
         databaseHelper = DatabaseHelper.getInstance(this);
 
-        // Get vocabulary items for the selected category
-        vocabularyItems = databaseHelper.getVocabularyByCategory(category);
+        // Get vocabulary items based on lesson
+        if (lessonId != -1) {
+            setLessonTitle(lessonId);
+            vocabularyItems = getVocabularyForLesson(lessonId);
+        } else {
+            // Legacy approach - use category
+            categoryTitle.setText(category);
+            vocabularyItems = databaseHelper.getVocabularyByCategory(category);
+        }
 
         // Set up ViewPager with adapter
         flashcardAdapter = new FlashcardAdapter(this, vocabularyItems);
@@ -71,11 +77,143 @@ public class FlashcardsActivity extends AppCompatActivity {
         completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                markFlashcardsCompleted();
+                if (lessonId != -1) {
+                    markSpecificLessonCompleted(lessonId);
+                } else {
+                    markFlashcardsCompleted();
+                }
             }
         });
     }
     
+    /**
+     * Sets the title based on the unit of the lesson
+     */
+    private void setLessonTitle(int lessonId) {
+        // Query for the unit name for this lesson
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        String query = "SELECT u." + DatabaseHelper.COLUMN_UNIT_NAME + 
+                      " FROM " + DatabaseHelper.TABLE_UNITS + " u " +
+                      " JOIN " + DatabaseHelper.TABLE_LESSONS + " l " +
+                      " ON u." + DatabaseHelper.COLUMN_UNIT_ID + " = l." + DatabaseHelper.COLUMN_LESSON_UNIT_ID +
+                      " WHERE l." + DatabaseHelper.COLUMN_LESSON_ID + " = ?";
+        
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(lessonId)});
+        if (cursor.moveToFirst()) {
+            String unitName = cursor.getString(0);
+            categoryTitle.setText(unitName);
+        } else {
+            categoryTitle.setText(category);
+        }
+        cursor.close();
+        db.close();
+    }
+    
+    /**
+     * Gets vocabulary items specific to the lesson's unit
+     */
+    private List<VocabularyItem> getVocabularyForLesson(int lessonId) {
+        // Get the unit ID for this lesson
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        String query = "SELECT " + DatabaseHelper.COLUMN_LESSON_UNIT_ID + 
+                      " FROM " + DatabaseHelper.TABLE_LESSONS + 
+                      " WHERE " + DatabaseHelper.COLUMN_LESSON_ID + " = ?";
+        
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(lessonId)});
+        int unitId = -1;
+        
+        if (cursor.moveToFirst()) {
+            unitId = cursor.getInt(0);
+            System.out.println("DEBUG: Flashcards for lesson: " + lessonId + ", unit: " + unitId);
+        }
+        cursor.close();
+        
+        // Get vocabulary for the unit
+        List<VocabularyItem> unitVocabulary = databaseHelper.getVocabularyByCategory(category);
+        
+        // If we have a valid unit ID, filter the vocabulary
+        if (unitId != -1) {
+            unitVocabulary = filterVocabularyByUnit(unitVocabulary, unitId);
+        }
+        
+        db.close();
+        return unitVocabulary;
+    }
+    
+    /**
+     * Filters vocabulary items based on the unit ID
+     */
+    private List<VocabularyItem> filterVocabularyByUnit(List<VocabularyItem> allItems, int unitId) {
+        // Use the same filtering logic as in QuizActivity
+        switch (unitId) {
+            case 1: // Travel - Places
+                return filterWordsByType(allItems, new String[]{"hotel", "station", "luchthaven", "centrum", "museum"});
+            case 2: // Travel - Transportation
+                return filterWordsByType(allItems, new String[]{"trein", "bus", "metro", "tram", "fiets", "auto", "taxi", 
+                                                              "boot", "vliegtuig", "ov-chipkaart", "perron", "snelweg", 
+                                                              "afslag", "stoplicht"});
+            case 5: // Food - Basic Food
+                return filterWordsByType(allItems, new String[]{"brood", "kaas", "appel", "groente", "fruit", "vlees", 
+                                                              "vis", "aardappel", "pasta", "rijst", "boterham", "soep", 
+                                                              "salade"});
+            case 6: // Food - Drinks
+                return filterWordsByType(allItems, new String[]{"koffie", "thee", "water", "melk", "sap", "bier", "wijn", 
+                                                              "frisdrank", "sinaasappelsap", "appelsap", "chocolademelk", 
+                                                              "limonade", "spa"});
+            case 9: // Greetings - Basic Greetings
+                return filterWordsByType(allItems, new String[]{"hallo", "goedemorgen", "goedemiddag", "goedenavond", 
+                                                               "tot ziens", "dank je", "alsjeblieft", "tot morgen", 
+                                                               "welkom", "sorry"});
+            case 10: // Greetings - Formal Greetings
+                return filterWordsByType(allItems, new String[]{"geachte", "meneer", "mevrouw", "vriendelijke groet", 
+                                                              "hoogachtend", "afspraak", "vergadering", "kennismaken", 
+                                                              "visitekaartje"});
+            default:
+                return allItems;
+        }
+    }
+    
+    /**
+     * Filters vocabulary items based on word types
+     */
+    private List<VocabularyItem> filterWordsByType(List<VocabularyItem> allItems, String[] wordTypes) {
+        java.util.List<VocabularyItem> filteredItems = new java.util.ArrayList<>();
+        
+        for (VocabularyItem item : allItems) {
+            String word = item.getDutchWord().toLowerCase();
+            for (String wordType : wordTypes) {
+                if (word.contains(wordType.toLowerCase())) {
+                    filteredItems.add(item);
+                    break;
+                }
+            }
+        }
+        
+        // If we don't have enough filtered items, return all items
+        if (filteredItems.size() < 5) {
+            return allItems;
+        }
+        
+        return filteredItems;
+    }
+    
+    /**
+     * Marks a specific lesson as completed
+     */
+    private void markSpecificLessonCompleted(int lessonId) {
+        System.out.println("DEBUG: Marking specific lesson as completed: " + lessonId);
+        databaseHelper.updateLessonProgress(lessonId, true);
+        
+        Toast.makeText(this, "Great job! You've completed this lesson.", Toast.LENGTH_SHORT).show();
+        
+        // Return to learning path
+        Intent intent = new Intent(this, LearningPathActivity.class);
+        intent.putExtra("CATEGORY_NAME", category);
+        intent.putExtra("USER_ID", userId);
+        startActivity(intent);
+        finish();
+    }
+
     private void markFlashcardsCompleted() {
         // Find the first flashcard lesson for this category
         int lessonId = -1;

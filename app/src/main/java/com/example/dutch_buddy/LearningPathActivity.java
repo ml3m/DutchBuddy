@@ -82,6 +82,9 @@ public class LearningPathActivity extends AppCompatActivity {
     }
     
     private void loadUnits() {
+        // Ensure vocabulary for next units is available
+        databaseHelper.addNextUnitsVocabulary();
+        
         List<Unit> units = databaseHelper.getUnitsByCategory(categoryName);
         System.out.println("DEBUG: Loaded " + units.size() + " units for category: " + categoryName);
         

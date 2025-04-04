@@ -947,4 +947,117 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return updatedRows;
     }
+    
+    /**
+     * Adds vocabulary items for the next units in each category (Transportation, Drinks, Formal Greetings)
+     * Call this method to ensure content is available for newly unlocked units
+     */
+    public void addNextUnitsVocabulary() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        
+        // Check if we already added the next units vocabulary (to avoid duplicates)
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_VOCABULARY + 
+                                   " WHERE " + COLUMN_DUTCH_WORD + " = 'Afspraak'", null);
+        if (cursor.moveToFirst() && cursor.getInt(0) > 0) {
+            cursor.close();
+            db.close();
+            return; // Already added
+        }
+        cursor.close();
+        
+        // Add vocabulary for Travel - Transportation unit
+        addVocabularyItem(db, "Travel", "Snelweg", "Highway");
+        addVocabularyItem(db, "Travel", "Afslag", "Exit (road)");
+        addVocabularyItem(db, "Travel", "Rotonde", "Roundabout");
+        addVocabularyItem(db, "Travel", "Stoplicht", "Traffic light");
+        addVocabularyItem(db, "Travel", "Zebrapad", "Pedestrian crossing");
+        addVocabularyItem(db, "Travel", "Rijbewijs", "Driver's license");
+        addVocabularyItem(db, "Travel", "Tankstation", "Gas station");
+        addVocabularyItem(db, "Travel", "Parkeerplaats", "Parking spot");
+        addVocabularyItem(db, "Travel", "Fietsenrek", "Bike rack");
+        addVocabularyItem(db, "Travel", "Fietsenmaker", "Bike repair shop");
+        addVocabularyItem(db, "Travel", "OV-chipkaart", "Public transport card");
+        addVocabularyItem(db, "Travel", "Vertraging", "Delay");
+        addVocabularyItem(db, "Travel", "Aankomst", "Arrival");
+        addVocabularyItem(db, "Travel", "Vertrek", "Departure");
+        addVocabularyItem(db, "Travel", "Perron", "Platform");
+        
+        // Add vocabulary for Food - Drinks unit
+        addVocabularyItem(db, "Food", "Bier", "Beer");
+        addVocabularyItem(db, "Food", "Wijn", "Wine");
+        addVocabularyItem(db, "Food", "Sap", "Juice");
+        addVocabularyItem(db, "Food", "Frisdrank", "Soft drink");
+        addVocabularyItem(db, "Food", "Sinaasappelsap", "Orange juice");
+        addVocabularyItem(db, "Food", "Appelsap", "Apple juice");
+        addVocabularyItem(db, "Food", "Warme chocolademelk", "Hot chocolate");
+        addVocabularyItem(db, "Food", "Limonade", "Lemonade");
+        addVocabularyItem(db, "Food", "Spa rood", "Sparkling water");
+        addVocabularyItem(db, "Food", "Spa blauw", "Still water");
+        addVocabularyItem(db, "Food", "Glas", "Glass");
+        addVocabularyItem(db, "Food", "Kopje", "Cup");
+        addVocabularyItem(db, "Food", "Dorst", "Thirsty");
+        addVocabularyItem(db, "Food", "Proost", "Cheers");
+        addVocabularyItem(db, "Food", "IJsblokje", "Ice cube");
+        
+        // Add vocabulary for Greetings - Formal Greetings unit
+        addVocabularyItem(db, "Greetings", "Geachte", "Dear (formal)");
+        addVocabularyItem(db, "Greetings", "Meneer", "Sir/Mr.");
+        addVocabularyItem(db, "Greetings", "Mevrouw", "Madam/Mrs.");
+        addVocabularyItem(db, "Greetings", "Met vriendelijke groet", "Kind regards");
+        addVocabularyItem(db, "Greetings", "Hoogachtend", "Yours sincerely");
+        addVocabularyItem(db, "Greetings", "Afspraak", "Appointment");
+        addVocabularyItem(db, "Greetings", "Vergadering", "Meeting");
+        addVocabularyItem(db, "Greetings", "Collega", "Colleague");
+        addVocabularyItem(db, "Greetings", "Kennismaken", "To get acquainted");
+        addVocabularyItem(db, "Greetings", "Visitekaartje", "Business card");
+        addVocabularyItem(db, "Greetings", "Arbeidscontract", "Employment contract");
+        addVocabularyItem(db, "Greetings", "Sollicitatiegesprek", "Job interview");
+        addVocabularyItem(db, "Greetings", "Hoe maakt u het?", "How are you? (formal)");
+        addVocabularyItem(db, "Greetings", "Aangenaam kennis te maken", "Pleased to meet you (formal)");
+        addVocabularyItem(db, "Greetings", "Tot ziens", "Goodbye (formal)");
+        
+        // Add the lessons for the next units
+        
+        // Travel - Transportation unit (unit ID 2)
+        // Check if lessons already exist
+        Cursor transportationCursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_LESSONS + 
+                                                  " WHERE " + COLUMN_LESSON_UNIT_ID + " = 2", null);
+        if (transportationCursor.moveToFirst() && transportationCursor.getInt(0) == 0) {
+            addLesson(db, "Transportation Vocabulary", "Learn vocabulary for different transportation methods", 2, 
+                      R.drawable.ic_travel, 1, 0, "VOCAB");
+            addLesson(db, "Transportation Quiz", "Test your knowledge of transportation terms", 2, 
+                      R.drawable.ic_travel, 0, 0, "QUIZ");
+            addLesson(db, "Transportation Sentences", "Practice sentences about transportation", 2, 
+                      R.drawable.ic_travel, 0, 0, "SENTENCE");
+        }
+        transportationCursor.close();
+        
+        // Food - Drinks unit (unit ID 6)
+        Cursor drinksCursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_LESSONS + 
+                                          " WHERE " + COLUMN_LESSON_UNIT_ID + " = 6", null);
+        if (drinksCursor.moveToFirst() && drinksCursor.getInt(0) == 0) {
+            addLesson(db, "Drinks Vocabulary", "Learn vocabulary for different beverages", 6, 
+                      R.drawable.ic_food, 1, 0, "VOCAB");
+            addLesson(db, "Drinks Quiz", "Test your knowledge of drink terms", 6, 
+                      R.drawable.ic_food, 0, 0, "QUIZ");
+            addLesson(db, "Drinks Sentences", "Practice sentences about drinks", 6, 
+                      R.drawable.ic_food, 0, 0, "SENTENCE");
+        }
+        drinksCursor.close();
+        
+        // Greetings - Formal Greetings unit (unit ID 10)
+        Cursor formalGreetingsCursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_LESSONS + 
+                                                    " WHERE " + COLUMN_LESSON_UNIT_ID + " = 10", null);
+        if (formalGreetingsCursor.moveToFirst() && formalGreetingsCursor.getInt(0) == 0) {
+            addLesson(db, "Formal Greetings Vocabulary", "Learn formal greeting vocabulary", 10, 
+                      R.drawable.ic_greetings, 1, 0, "VOCAB");
+            addLesson(db, "Formal Greetings Quiz", "Test your knowledge of formal greetings", 10, 
+                      R.drawable.ic_greetings, 0, 0, "QUIZ");
+            addLesson(db, "Formal Greetings Sentences", "Practice sentences with formal greetings", 10, 
+                      R.drawable.ic_greetings, 0, 0, "SENTENCE");
+        }
+        formalGreetingsCursor.close();
+        
+        db.close();
+    }
 } 

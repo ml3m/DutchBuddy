@@ -3,6 +3,8 @@ package com.example.dutch_buddy;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -42,6 +44,7 @@ public class QuizActivity extends AppCompatActivity {
     private int totalQuestions = 10; // Max number of questions
     private MaterialCardView selectedCardOption = null;
     private int userId = -1;
+    private int lessonId = -1;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class QuizActivity extends AppCompatActivity {
         // Get category from intent
         category = getIntent().getStringExtra("CATEGORY_NAME");
         userId = getIntent().getIntExtra("USER_ID", -1);
+        lessonId = getIntent().getIntExtra("LESSON_ID", -1);
         
         // Validate user ID
         if (userId == -1) {
@@ -77,20 +81,24 @@ public class QuizActivity extends AppCompatActivity {
         // Set up card clicks to select the answer
         setupCardClickListeners();
         
-        // Set the category title
-        quizCategoryTitle.setText(category + " Quiz");
-        
         // Initialize database helper
         databaseHelper = DatabaseHelper.getInstance(this);
         
+        // Get unit title for quiz if lesson ID is provided
+        if (lessonId != -1) {
+            setQuizTitle(lessonId);
+        } else {
+            quizCategoryTitle.setText(category + " Quiz");
+        }
+        
         // Get vocabulary items for the quiz
-        prepareQuizItems();
+        prepareQuizItems(lessonId);
         
         // Show the first question
         if (!quizItems.isEmpty()) {
             showQuestion(currentQuestionIndex);
         } else {
-            Toast.makeText(this, "No vocabulary items available for this category", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No vocabulary items available for this quiz", Toast.LENGTH_SHORT).show();
             finish();
         }
         
@@ -203,10 +211,215 @@ public class QuizActivity extends AppCompatActivity {
         return "";
     }
     
-    private void prepareQuizItems() {
-        // Get all vocabulary items for the category
-        allVocabularyItems = databaseHelper.getVocabularyByCategory(category);
+    private void prepareQuizItems(int lessonId) {
+        // If a specific lesson ID is provided, get vocabulary for that unit
+        if (lessonId != -1) {
+            prepareQuizItemsForLesson(lessonId);
+        } else {
+            // Legacy approach - get all items for the category
+            prepareAllCategoryQuizItems();
+        }
+    }
+    
+    private void prepareQuizItemsForLesson(int lessonId) {
+        // Get the unit ID for this lesson
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        String query = "SELECT " + DatabaseHelper.COLUMN_LESSON_UNIT_ID + 
+                      " FROM " + DatabaseHelper.TABLE_LESSONS + 
+                      " WHERE " + DatabaseHelper.COLUMN_LESSON_ID + " = ?";
         
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(lessonId)});
+        int unitId = -1;
+        
+        if (cursor.moveToFirst()) {
+            unitId = cursor.getInt(0);
+            System.out.println("DEBUG: Quiz for lesson: " + lessonId + ", unit: " + unitId);
+        }
+        cursor.close();
+        
+        // Based on unit ID, select appropriate vocabulary
+        if (unitId != -1) {
+            // Get vocabulary specific to certain units
+            allVocabularyItems = getVocabularyForUnit(unitId);
+            System.out.println("DEBUG: Found " + allVocabularyItems.size() + " vocabulary items for unit: " + unitId);
+        } else {
+            // Fallback to category
+            allVocabularyItems = databaseHelper.getVocabularyByCategory(category);
+        }
+        
+        db.close();
+        
+        // Process quiz items
+        processFinalQuizItems();
+    }
+    
+    /**
+     * Gets vocabulary specifically for a unit based on its ID
+     */
+    private List<VocabularyItem> getVocabularyForUnit(int unitId) {
+        List<VocabularyItem> unitVocabulary = new ArrayList<>();
+        
+        // Get category vocabulary
+        List<VocabularyItem> categoryVocabulary = databaseHelper.getVocabularyByCategory(category);
+        
+        // Filter based on unit ID
+        switch (unitId) {
+            case 1: // Travel - Places
+                // Filter travel vocabulary about places
+                for (VocabularyItem item : categoryVocabulary) {
+                    String word = item.getDutchWord().toLowerCase();
+                    if (isPlaceWord(word)) {
+                        unitVocabulary.add(item);
+                    }
+                }
+                break;
+                
+            case 2: // Travel - Transportation
+                // Filter travel vocabulary about transportation
+                for (VocabularyItem item : categoryVocabulary) {
+                    String word = item.getDutchWord().toLowerCase();
+                    if (isTransportationWord(word)) {
+                        unitVocabulary.add(item);
+                    }
+                }
+                
+                // If we found fewer than 5 items, include all travel vocabulary
+                if (unitVocabulary.size() < 5) {
+                    return categoryVocabulary;
+                }
+                break;
+                
+            case 5: // Food - Basic Food
+                // Filter food vocabulary about basic foods
+                for (VocabularyItem item : categoryVocabulary) {
+                    String word = item.getDutchWord().toLowerCase();
+                    if (isBasicFoodWord(word)) {
+                        unitVocabulary.add(item);
+                    }
+                }
+                break;
+                
+            case 6: // Food - Drinks
+                // Filter food vocabulary about drinks
+                for (VocabularyItem item : categoryVocabulary) {
+                    String word = item.getDutchWord().toLowerCase();
+                    if (isDrinkWord(word)) {
+                        unitVocabulary.add(item);
+                    }
+                }
+                
+                // If we found fewer than 5 items, include all food vocabulary
+                if (unitVocabulary.size() < 5) {
+                    return categoryVocabulary;
+                }
+                break;
+                
+            case 9: // Greetings - Basic Greetings
+                // Filter greetings vocabulary for basic greetings
+                for (VocabularyItem item : categoryVocabulary) {
+                    String word = item.getDutchWord().toLowerCase();
+                    if (isBasicGreetingWord(word)) {
+                        unitVocabulary.add(item);
+                    }
+                }
+                break;
+                
+            case 10: // Greetings - Formal Greetings
+                // Filter greetings vocabulary for formal greetings
+                for (VocabularyItem item : categoryVocabulary) {
+                    String word = item.getDutchWord().toLowerCase();
+                    if (isFormalGreetingWord(word)) {
+                        unitVocabulary.add(item);
+                    }
+                }
+                
+                // If we found fewer than 5 items, include all greetings vocabulary
+                if (unitVocabulary.size() < 5) {
+                    return categoryVocabulary;
+                }
+                break;
+                
+            default:
+                // Default to all vocabulary for the category
+                return categoryVocabulary;
+        }
+        
+        // If we couldn't find enough vocabulary specific to the unit, use all category vocabulary
+        if (unitVocabulary.size() < 5) {
+            return categoryVocabulary;
+        }
+        
+        return unitVocabulary;
+    }
+    
+    // Helper methods to identify words for specific units
+    
+    private boolean isPlaceWord(String word) {
+        // Words related to places in the Travel category
+        String[] placeWords = {"hotel", "station", "luchthaven", "centrum", "museum"};
+        for (String placeWord : placeWords) {
+            if (word.contains(placeWord)) return true;
+        }
+        return false;
+    }
+    
+    private boolean isTransportationWord(String word) {
+        // Words related to transportation in the Travel category
+        String[] transportWords = {"trein", "bus", "metro", "tram", "fiets", "auto", "taxi", "boot", 
+                                  "vliegtuig", "ov-chipkaart", "perron", "snelweg", "afslag", "stoplicht"};
+        for (String transportWord : transportWords) {
+            if (word.contains(transportWord)) return true;
+        }
+        return false;
+    }
+    
+    private boolean isBasicFoodWord(String word) {
+        // Words related to basic food in the Food category
+        String[] basicFoodWords = {"brood", "kaas", "appel", "groente", "fruit", "vlees", "vis", 
+                                  "aardappel", "pasta", "rijst", "boterham", "soep", "salade"};
+        for (String foodWord : basicFoodWords) {
+            if (word.contains(foodWord)) return true;
+        }
+        return false;
+    }
+    
+    private boolean isDrinkWord(String word) {
+        // Words related to drinks in the Food category
+        String[] drinkWords = {"koffie", "thee", "water", "melk", "sap", "bier", "wijn", "frisdrank", 
+                              "sinaasappelsap", "appelsap", "chocolademelk", "limonade", "spa"};
+        for (String drinkWord : drinkWords) {
+            if (word.contains(drinkWord)) return true;
+        }
+        return false;
+    }
+    
+    private boolean isBasicGreetingWord(String word) {
+        // Words related to basic greetings in the Greetings category
+        String[] basicGreetingWords = {"hallo", "goedemorgen", "goedemiddag", "goedenavond", "tot ziens", 
+                                      "dank je", "alsjeblieft", "tot morgen", "welkom", "sorry"};
+        for (String greetingWord : basicGreetingWords) {
+            if (word.contains(greetingWord.toLowerCase())) return true;
+        }
+        return false;
+    }
+    
+    private boolean isFormalGreetingWord(String word) {
+        // Words related to formal greetings in the Greetings category
+        String[] formalGreetingWords = {"geachte", "meneer", "mevrouw", "vriendelijke groet", "hoogachtend", 
+                                       "afspraak", "vergadering", "kennismaken", "visitekaartje"};
+        for (String greetingWord : formalGreetingWords) {
+            if (word.contains(greetingWord.toLowerCase())) return true;
+        }
+        return false;
+    }
+    
+    private void prepareAllCategoryQuizItems() {
+        // Legacy method - get all vocabulary items for the category
+        allVocabularyItems = databaseHelper.getVocabularyByCategory(category);
+        processFinalQuizItems();
+    }
+    
+    private void processFinalQuizItems() {
         // If there are less than or equal to totalQuestions vocabulary items, use all of them
         if (allVocabularyItems.size() <= totalQuestions) {
             quizItems = new ArrayList<>(allVocabularyItems);
@@ -224,13 +437,43 @@ public class QuizActivity extends AppCompatActivity {
             Collections.shuffle(indices);
             
             // Add the first totalQuestions items to the quiz items
-            for (int i = 0; i < totalQuestions; i++) {
+            for (int i = 0; i < totalQuestions && i < indices.size(); i++) {
                 quizItems.add(allVocabularyItems.get(indices.get(i)));
             }
         }
         
         // Shuffle the quiz items
         Collections.shuffle(quizItems);
+    }
+    
+    /**
+     * Sets the appropriate quiz title based on the lesson
+     */
+    private void setQuizTitle(int lessonId) {
+        // Get the unit name for this lesson to make a more specific quiz title
+        String unitName = "";
+        
+        // Query for the unit name for this lesson
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        String query = "SELECT u." + DatabaseHelper.COLUMN_UNIT_NAME + 
+                      " FROM " + DatabaseHelper.TABLE_UNITS + " u " +
+                      " JOIN " + DatabaseHelper.TABLE_LESSONS + " l " +
+                      " ON u." + DatabaseHelper.COLUMN_UNIT_ID + " = l." + DatabaseHelper.COLUMN_LESSON_UNIT_ID +
+                      " WHERE l." + DatabaseHelper.COLUMN_LESSON_ID + " = ?";
+        
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(lessonId)});
+        if (cursor.moveToFirst()) {
+            unitName = cursor.getString(0);
+        }
+        cursor.close();
+        db.close();
+        
+        // Set a more specific title
+        if (!unitName.isEmpty()) {
+            quizCategoryTitle.setText(unitName + " Quiz");
+        } else {
+            quizCategoryTitle.setText(category + " Quiz");
+        }
     }
     
     private void showQuestion(int index) {
