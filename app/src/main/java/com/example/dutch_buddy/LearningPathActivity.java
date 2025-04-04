@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dutch_buddy.adapters.UnitAdapter;
 import com.example.dutch_buddy.data.DatabaseHelper;
 import com.example.dutch_buddy.data.Unit;
+import com.example.dutch_buddy.data.Lesson;
 
 import java.util.List;
 
@@ -72,8 +73,35 @@ public class LearningPathActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println("DEBUG: LearningPathActivity onResume - Refreshing units for category: " + categoryName);
+        // Reload the units to reflect any changes in completion status
+        loadUnits();
+    }
+    
     private void loadUnits() {
         List<Unit> units = databaseHelper.getUnitsByCategory(categoryName);
+        System.out.println("DEBUG: Loaded " + units.size() + " units for category: " + categoryName);
+        
+        // Debug unit information
+        for (Unit unit : units) {
+            System.out.println("DEBUG: Unit: " + unit.getName() + 
+                              ", Unlocked: " + unit.isUnlocked() + 
+                              ", Completed: " + unit.isCompleted());
+            
+            // Debug lessons in this unit
+            List<Lesson> lessons = unit.getLessons();
+            if (lessons != null) {
+                for (Lesson lesson : lessons) {
+                    System.out.println("DEBUG:   Lesson: " + lesson.getName() + 
+                                      ", Type: " + lesson.getLessonType() + 
+                                      ", Unlocked: " + lesson.isUnlocked() + 
+                                      ", Completed: " + lesson.isCompleted());
+                }
+            }
+        }
         
         // Setup adapter
         unitAdapter = new UnitAdapter(this, units, userId, categoryName);

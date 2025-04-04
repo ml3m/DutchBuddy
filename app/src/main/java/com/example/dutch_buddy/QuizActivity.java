@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -137,7 +136,7 @@ public class QuizActivity extends AppCompatActivity {
         
         // Set up back button
         backButton.setOnClickListener(v -> {
-            onBackPressed();
+            finish();
         });
     }
     
@@ -176,7 +175,7 @@ public class QuizActivity extends AppCompatActivity {
     private void updateCardAppearance(MaterialCardView card, boolean isSelected) {
         if (isSelected) {
             card.setStrokeWidth(4);
-            card.setStrokeColor(getResources().getColor(R.color.matcha_green));
+            card.setStrokeColor(getResources().getColor(R.color.matcha_green, getTheme()));
             card.setCardElevation(8);
             // Add ripple effect
             card.setClickable(true);

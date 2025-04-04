@@ -165,6 +165,12 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder
             Intent intent;
             String lessonType = lesson.getLessonType();
             
+            System.out.println("DEBUG: Starting lesson - ID: " + lesson.getId() + 
+                              ", Name: " + lesson.getName() + 
+                              ", Type: " + lessonType + 
+                              ", Category: " + categoryName + 
+                              ", Is completed: " + lesson.isCompleted());
+            
             switch (lessonType) {
                 case "VOCAB":
                     intent = new Intent(context, FlashcardsActivity.class);
@@ -176,6 +182,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.UnitViewHolder
                     intent = new Intent(context, CompleteSentenceActivity.class);
                     break;
                 default:
+                    System.out.println("DEBUG: Unknown lesson type: " + lessonType + ", defaulting to Flashcards");
                     intent = new Intent(context, FlashcardsActivity.class);
                     break;
             }

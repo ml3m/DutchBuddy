@@ -629,7 +629,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String whereClause = COLUMN_LESSON_ID + " = ?";
         String[] whereArgs = {String.valueOf(lessonId)};
         
-        db.update(TABLE_LESSONS, values, whereClause, whereArgs);
+        int rows = db.update(TABLE_LESSONS, values, whereClause, whereArgs);
+        System.out.println("DEBUG: updateLessonProgress - Updated " + rows + " rows for lessonId: " + lessonId + ", completed: " + completed);
         db.close();
     }
     
@@ -713,6 +714,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         
         if (unitCursor.moveToFirst()) {
             int unitId = unitCursor.getInt(0);
+            System.out.println("DEBUG: getNextLessonId - Found unitId: " + unitId + " for lessonId: " + currentLessonId);
             unitCursor.close();
             
             // Get the next lesson in the same unit
@@ -726,8 +728,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             
             if (nextLessonCursor.moveToFirst()) {
                 nextLessonId = nextLessonCursor.getInt(0);
+                System.out.println("DEBUG: getNextLessonId - Found next lessonId: " + nextLessonId);
+            } else {
+                System.out.println("DEBUG: getNextLessonId - No next lesson found in unitId: " + unitId);
             }
             nextLessonCursor.close();
+        } else {
+            System.out.println("DEBUG: getNextLessonId - No unit found for lessonId: " + currentLessonId);
+            unitCursor.close();
         }
         
         db.close();
@@ -742,7 +750,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String whereClause = COLUMN_LESSON_ID + " = ?";
         String[] whereArgs = {String.valueOf(lessonId)};
         
-        db.update(TABLE_LESSONS, values, whereClause, whereArgs);
+        int rows = db.update(TABLE_LESSONS, values, whereClause, whereArgs);
+        System.out.println("DEBUG: updateLessonUnlockStatus - Updated " + rows + " rows for lessonId: " + lessonId + ", unlocked: " + unlocked);
         db.close();
     }
 } 

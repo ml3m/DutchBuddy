@@ -3,6 +3,8 @@ package com.example.dutch_buddy;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +42,8 @@ public class QuizResultsActivity extends AppCompatActivity {
             correctAnswers = getIntent().getIntExtra("correctAnswers", 0);
             totalQuestions = getIntent().getIntExtra("totalQuestions", 0);
             userId = getIntent().getIntExtra("USER_ID", -1);
+            
+            System.out.println("DEBUG: QuizResults onCreate with category: " + category + ", userID: " + userId);
         } else {
             finish(); // If required data is missing, close the activity
             return;
@@ -50,6 +54,7 @@ public class QuizResultsActivity extends AppCompatActivity {
         user = databaseHelper.getUser(userId);
         
         if (user == null) {
+            System.out.println("DEBUG: User not found with ID: " + userId);
             finish();
             return;
         }
@@ -66,8 +71,12 @@ public class QuizResultsActivity extends AppCompatActivity {
         // Set up the UI with quiz results
         displayResults();
         
+        // Mark the quiz lesson as completed
+        markQuizCompleted();
+        
         // Set up button click listeners
         newQuizButton.setOnClickListener(v -> {
+            System.out.println("DEBUG: New Quiz button clicked");
             Intent quizIntent = new Intent(QuizResultsActivity.this, QuizActivity.class);
             quizIntent.putExtra("CATEGORY_NAME", category);
             quizIntent.putExtra("USER_ID", userId);
@@ -76,6 +85,7 @@ public class QuizResultsActivity extends AppCompatActivity {
         });
         
         returnToCategoriesButton.setOnClickListener(v -> {
+            System.out.println("DEBUG: Return to categories button clicked");
             // Go back to the main activity
             Intent mainIntent = new Intent(QuizResultsActivity.this, MainActivity.class);
             mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -83,6 +93,50 @@ public class QuizResultsActivity extends AppCompatActivity {
             startActivity(mainIntent);
             finish();
         });
+    }
+    
+    private void markQuizCompleted() {
+        // Find the quiz lesson for this category
+        int lessonId = -1;
+        
+        // Query for the quiz lesson in this category
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        String query = "SELECT l." + DatabaseHelper.COLUMN_LESSON_ID + 
+                      " FROM " + DatabaseHelper.TABLE_LESSONS + " l " +
+                      " JOIN " + DatabaseHelper.TABLE_UNITS + " u " +
+                      " ON l." + DatabaseHelper.COLUMN_LESSON_UNIT_ID + " = u." + DatabaseHelper.COLUMN_UNIT_ID +
+                      " WHERE u." + DatabaseHelper.COLUMN_UNIT_CATEGORY + " = ? " +
+                      " AND l." + DatabaseHelper.COLUMN_LESSON_TYPE + " = 'QUIZ' " +
+                      " ORDER BY l." + DatabaseHelper.COLUMN_LESSON_ID + " ASC LIMIT 1";
+        
+        System.out.println("DEBUG: Quiz results showing for category: " + category);
+        System.out.println("DEBUG: Quiz score: " + correctAnswers + " out of " + totalQuestions);
+        
+        Cursor cursor = db.rawQuery(query, new String[]{category});
+        if (cursor.moveToFirst()) {
+            lessonId = cursor.getInt(0);
+            System.out.println("DEBUG: Found quiz lesson ID: " + lessonId);
+        } else {
+            System.out.println("DEBUG: No quiz lesson found for category: " + category + " with type QUIZ");
+        }
+        cursor.close();
+        
+        if (lessonId != -1) {
+            System.out.println("DEBUG: Marking quiz lesson as completed: " + lessonId);
+            // Mark the quiz as completed
+            databaseHelper.updateLessonProgress(lessonId, true);
+            
+            // Unlock the next lesson if there is one
+            int nextLessonId = databaseHelper.getNextLessonId(lessonId);
+            if (nextLessonId != -1) {
+                System.out.println("DEBUG: Unlocking next lesson after quiz: " + nextLessonId);
+                databaseHelper.updateLessonUnlockStatus(nextLessonId, true);
+            } else {
+                System.out.println("DEBUG: No next lesson found after quiz: " + lessonId);
+            }
+        } else {
+            System.out.println("DEBUG: Failed to find the quiz lesson ID for completion");
+        }
     }
     
     private void displayResults() {
