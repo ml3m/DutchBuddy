@@ -241,84 +241,25 @@ public class CompleteSentenceActivity extends AppCompatActivity implements WordB
             System.out.println("DEBUG: No sentence lesson found for category: " + categoryName);
         }
         cursor.close();
+        db.close();
         
         if (lessonId != -1) {
             System.out.println("DEBUG: Marking sentence lesson as completed: " + lessonId);
+            // This will automatically handle unit completion and unlocking the next lesson
             databaseHelper.updateLessonProgress(lessonId, true);
             
-            // Check if all lessons in this unit are completed
-            checkAndUpdateUnitCompletion(lessonId);
+            Toast.makeText(this, "Lesson completed! You're making great progress!", Toast.LENGTH_SHORT).show();
             
-            // Navigate back to the learning path
+            // Return to the learning path to see progression
             navigateToLearningPath();
         } else {
             System.out.println("DEBUG: Failed to find the sentence lesson ID for completion");
-            // Still return to learning path even if lesson ID not found
-            Toast.makeText(this, "Unable to update progress, but you can continue.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Could not update progress, but you can continue.", Toast.LENGTH_SHORT).show();
             navigateToLearningPath();
         }
     }
     
-    private void checkAndUpdateUnitCompletion(int lessonId) {
-        // Get the unit ID for the current lesson
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        int unitId = -1;
-        
-        String unitQuery = "SELECT " + DatabaseHelper.COLUMN_LESSON_UNIT_ID + 
-                         " FROM " + DatabaseHelper.TABLE_LESSONS + 
-                         " WHERE " + DatabaseHelper.COLUMN_LESSON_ID + " = ?";
-        
-        Cursor unitCursor = db.rawQuery(unitQuery, new String[]{String.valueOf(lessonId)});
-        if (unitCursor.moveToFirst()) {
-            unitId = unitCursor.getInt(0);
-            System.out.println("DEBUG: Found unit ID: " + unitId + " for lesson: " + lessonId);
-        }
-        unitCursor.close();
-        
-        if (unitId != -1) {
-            // Check if all lessons in this unit are completed
-            String lessonsQuery = "SELECT COUNT(*) AS total, " +
-                               "SUM(CASE WHEN " + DatabaseHelper.COLUMN_LESSON_COMPLETED + " = 1 THEN 1 ELSE 0 END) AS completed " +
-                               "FROM " + DatabaseHelper.TABLE_LESSONS + 
-                               " WHERE " + DatabaseHelper.COLUMN_LESSON_UNIT_ID + " = ?";
-            
-            Cursor lessonsCursor = db.rawQuery(lessonsQuery, new String[]{String.valueOf(unitId)});
-            if (lessonsCursor.moveToFirst()) {
-                int totalLessons = lessonsCursor.getInt(0);
-                int completedLessons = lessonsCursor.getInt(1);
-                
-                System.out.println("DEBUG: Unit ID: " + unitId + " has " + completedLessons + 
-                                 " completed lessons out of " + totalLessons);
-                
-                // If all lessons are completed, mark the unit as completed
-                if (totalLessons > 0 && totalLessons == completedLessons) {
-                    System.out.println("DEBUG: All lessons completed, marking unit as completed: " + unitId);
-                    databaseHelper.updateUnitProgress(unitId, true);
-                    
-                    // Get the category for this unit
-                    String categoryQuery = "SELECT " + DatabaseHelper.COLUMN_UNIT_CATEGORY + 
-                                        " FROM " + DatabaseHelper.TABLE_UNITS + 
-                                        " WHERE " + DatabaseHelper.COLUMN_UNIT_ID + " = ?";
-                    
-                    Cursor categoryCursor = db.rawQuery(categoryQuery, new String[]{String.valueOf(unitId)});
-                    if (categoryCursor.moveToFirst()) {
-                        String category = categoryCursor.getString(0);
-                        
-                        // Unlock the next unit in this category
-                        System.out.println("DEBUG: Unlocking next unit in category: " + category);
-                        databaseHelper.unlockNextUnit(category, unitId);
-                    }
-                    categoryCursor.close();
-                }
-            }
-            lessonsCursor.close();
-        }
-        
-        db.close();
-    }
-    
     private void navigateToLearningPath() {
-        System.out.println("DEBUG: Navigating back to learning path for category: " + categoryName);
         Intent intent = new Intent(this, LearningPathActivity.class);
         intent.putExtra("CATEGORY_NAME", categoryName);
         intent.putExtra("USER_ID", userId);

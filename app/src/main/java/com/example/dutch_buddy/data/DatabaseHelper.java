@@ -618,6 +618,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String[] whereArgs = {String.valueOf(unitId)};
         
         db.update(TABLE_UNITS, values, whereClause, whereArgs);
+        
+        // If unit is completed, get its category and unlock the next unit in sequence
+        if (completed) {
+            String categoryQuery = "SELECT " + COLUMN_UNIT_CATEGORY + 
+                                " FROM " + TABLE_UNITS + 
+                                " WHERE " + COLUMN_UNIT_ID + " = ?";
+            
+            Cursor categoryCursor = db.rawQuery(categoryQuery, new String[]{String.valueOf(unitId)});
+            if (categoryCursor.moveToFirst()) {
+                String category = categoryCursor.getString(0);
+                
+                // Unlock the next unit in this category
+                System.out.println("DEBUG: Unlocking next unit in category: " + category);
+                unlockNextUnit(category, unitId);
+            }
+            categoryCursor.close();
+        }
+        
         db.close();
     }
     
@@ -631,6 +649,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         
         int rows = db.update(TABLE_LESSONS, values, whereClause, whereArgs);
         System.out.println("DEBUG: updateLessonProgress - Updated " + rows + " rows for lessonId: " + lessonId + ", completed: " + completed);
+        
+        // If the lesson is marked as completed, check if we need to unlock the next lesson
+        if (completed) {
+            // Get the unit ID for this lesson
+            String unitQuery = "SELECT " + COLUMN_LESSON_UNIT_ID + " FROM " + TABLE_LESSONS + 
+                             " WHERE " + COLUMN_LESSON_ID + " = ?";
+            
+            Cursor unitCursor = db.rawQuery(unitQuery, new String[]{String.valueOf(lessonId)});
+            if (unitCursor.moveToFirst()) {
+                int unitId = unitCursor.getInt(0);
+                
+                // Find the next lesson in the unit
+                int nextLessonId = getNextLessonId(lessonId);
+                if (nextLessonId != -1) {
+                    // Unlock the next lesson
+                    updateLessonUnlockStatus(nextLessonId, true);
+                    System.out.println("DEBUG: Auto-unlocked next lesson: " + nextLessonId + " after completing: " + lessonId);
+                }
+                
+                // Check if this was the last lesson in the unit
+                String lessonsQuery = "SELECT COUNT(*) AS total, " +
+                                   "SUM(CASE WHEN " + COLUMN_LESSON_COMPLETED + " = 1 THEN 1 ELSE 0 END) AS completed " +
+                                   "FROM " + TABLE_LESSONS + 
+                                   " WHERE " + COLUMN_LESSON_UNIT_ID + " = ?";
+                
+                Cursor lessonsCursor = db.rawQuery(lessonsQuery, new String[]{String.valueOf(unitId)});
+                if (lessonsCursor.moveToFirst()) {
+                    int totalLessons = lessonsCursor.getInt(0);
+                    int completedLessons = lessonsCursor.getInt(1);
+                    
+                    // If all lessons are completed, mark the unit as completed
+                    if (totalLessons > 0 && totalLessons == completedLessons) {
+                        System.out.println("DEBUG: All lessons completed in unit: " + unitId + ", marking as completed");
+                        updateUnitProgress(unitId, true);
+                    }
+                }
+                lessonsCursor.close();
+            }
+            unitCursor.close();
+        }
+        
         db.close();
     }
     
@@ -652,7 +711,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String whereClause = COLUMN_UNIT_ID + " = ?";
             String[] whereArgs = {String.valueOf(nextUnitId)};
             
-            db.update(TABLE_UNITS, values, whereClause, whereArgs);
+            // Unlock the next unit
+            int updatedRows = db.update(TABLE_UNITS, values, whereClause, whereArgs);
+            System.out.println("DEBUG: Unlocked next unit ID: " + nextUnitId + " (updated " + updatedRows + " rows)");
+            
+            // Also unlock the first lesson in the newly unlocked unit
+            String firstLessonQuery = "SELECT " + COLUMN_LESSON_ID + " FROM " + TABLE_LESSONS +
+                    " WHERE " + COLUMN_LESSON_UNIT_ID + " = ? " +
+                    " ORDER BY " + COLUMN_LESSON_ID + " ASC LIMIT 1";
+            
+            Cursor lessonCursor = db.rawQuery(firstLessonQuery, new String[]{String.valueOf(nextUnitId)});
+            if (lessonCursor.moveToFirst()) {
+                int firstLessonId = lessonCursor.getInt(lessonCursor.getColumnIndexOrThrow(COLUMN_LESSON_ID));
+                
+                // Unlock the first lesson
+                ContentValues lessonValues = new ContentValues();
+                lessonValues.put(COLUMN_LESSON_UNLOCKED, 1);
+                
+                String lessonWhereClause = COLUMN_LESSON_ID + " = ?";
+                String[] lessonWhereArgs = {String.valueOf(firstLessonId)};
+                
+                int lessonUpdatedRows = db.update(TABLE_LESSONS, lessonValues, lessonWhereClause, lessonWhereArgs);
+                System.out.println("DEBUG: Unlocked first lesson ID: " + firstLessonId + " of unit: " + nextUnitId + 
+                                 " (updated " + lessonUpdatedRows + " rows)");
+            }
+            lessonCursor.close();
+        } else {
+            System.out.println("DEBUG: No next unit found for category: " + category + " after unit: " + currentUnitId);
         }
         
         cursor.close();
