@@ -85,11 +85,19 @@ public class LearningPathActivity extends AppCompatActivity {
         List<Unit> units = databaseHelper.getUnitsByCategory(categoryName);
         System.out.println("DEBUG: Loaded " + units.size() + " units for category: " + categoryName);
         
-        // Debug unit information
+        // Check for completed units and ensure proper progression
         for (Unit unit : units) {
             System.out.println("DEBUG: Unit: " + unit.getName() + 
                               ", Unlocked: " + unit.isUnlocked() + 
                               ", Completed: " + unit.isCompleted());
+            
+            // If a unit is completed, make sure the next unit is unlocked
+            if (unit.isCompleted()) {
+                boolean updated = databaseHelper.checkAndUnlockNextUnit(unit.getId());
+                if (updated) {
+                    System.out.println("DEBUG: Fixed progression for completed unit: " + unit.getName());
+                }
+            }
             
             // Debug lessons in this unit
             List<Lesson> lessons = unit.getLessons();
@@ -101,6 +109,12 @@ public class LearningPathActivity extends AppCompatActivity {
                                       ", Completed: " + lesson.isCompleted());
                 }
             }
+        }
+        
+        // Reload units to get the updated data after progression checks
+        if (units.stream().anyMatch(Unit::isCompleted)) {
+            units = databaseHelper.getUnitsByCategory(categoryName);
+            System.out.println("DEBUG: Reloaded units after progression check");
         }
         
         // Setup adapter
