@@ -1,10 +1,16 @@
 package com.example.dutch_buddy;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -292,35 +298,111 @@ public class CompleteSentenceActivity extends AppCompatActivity implements WordB
         selectedWordTextView.setText(word);
     }
     
+    private void showAnswerFeedbackDialog(boolean isCorrect, String correctWord, String selectedWord) {
+        // Create and show the custom dialog
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_answer_feedback);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        
+        // Get dialog views
+        ImageView feedbackIcon = dialog.findViewById(R.id.feedbackIcon);
+        TextView feedbackTitle = dialog.findViewById(R.id.feedbackTitle);
+        TextView questionText = dialog.findViewById(R.id.questionText);
+        TextView yourAnswerText = dialog.findViewById(R.id.yourAnswerText);
+        TextView correctAnswerText = dialog.findViewById(R.id.correctAnswerText);
+        TextView successMessage = dialog.findViewById(R.id.successMessage);
+        TextView encouragementMessage = dialog.findViewById(R.id.encouragementMessage);
+        MaterialButton continueButton = dialog.findViewById(R.id.continueButton);
+        
+        // Get section views
+        View answerComparisonSection = dialog.findViewById(R.id.answerComparisonSection);
+        View successMessageSection = dialog.findViewById(R.id.successMessageSection);
+        
+        // Set the question text (sentence with blank)
+        String sentenceWithBlank = currentExercise.getSentence().replace(currentExercise.getMissingWord(), "_____");
+        questionText.setText(sentenceWithBlank);
+        
+        // Set up the feedback content
+        feedbackIcon.setImageResource(isCorrect ? R.drawable.ic_correct_answer : R.drawable.ic_incorrect_answer);
+        feedbackTitle.setText(getString(isCorrect ? R.string.correct : R.string.incorrect));
+        feedbackTitle.setTextColor(getResources().getColor(isCorrect ? R.color.matcha_green : R.color.mocha_brown, null));
+        
+        if (isCorrect) {
+            // Show success section, hide comparison section
+            successMessageSection.setVisibility(View.VISIBLE);
+            answerComparisonSection.setVisibility(View.GONE);
+            
+            successMessage.setText(getString(R.string.well_done_correct, correctWord));
+            encouragementMessage.setText("Perfect! You completed the sentence correctly!");
+        } else {
+            // Show comparison section, hide success section
+            successMessageSection.setVisibility(View.GONE);
+            answerComparisonSection.setVisibility(View.VISIBLE);
+            
+            // Set the answers
+            yourAnswerText.setText(selectedWord);
+            correctAnswerText.setText(correctWord);
+            encouragementMessage.setText("Hint: " + currentExercise.getHint() + "\n" + getString(R.string.keep_practicing));
+        }
+        
+        // Set up continue button
+        continueButton.setBackgroundColor(getResources().getColor(isCorrect ? R.color.matcha_green : R.color.mocha_brown, null));
+        continueButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            if (isCorrect) {
+                // Move to the next exercise after dialog is dismissed
+                if (currentExerciseIndex < exerciseList.size() - 1) {
+                    loadExercise(currentExerciseIndex + 1);
+                } else {
+                    // All exercises completed
+                    System.out.println("DEBUG: All sentence exercises completed for category: " + categoryName);
+                    Toast.makeText(CompleteSentenceActivity.this, 
+                            "All exercises completed! Well done!", Toast.LENGTH_LONG).show();
+                    
+                    // Mark the lesson as completed and unlock next unit/lesson
+                    markSentenceLessonCompleted();
+                }
+            }
+        });
+        
+        // Show flash animation before showing dialog
+        View flashOverlay = new View(this);
+        flashOverlay.setBackgroundColor(getResources().getColor(
+            isCorrect ? R.color.matcha_green : R.color.mocha_brown, null));
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT);
+        ((ViewGroup) getWindow().getDecorView().getRootView()).addView(flashOverlay, params);
+        
+        Animation flashAnim = AnimationUtils.loadAnimation(this, R.anim.feedback_flash);
+        flashAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+            
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                ((ViewGroup) flashOverlay.getParent()).removeView(flashOverlay);
+                dialog.show();
+            }
+            
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+        
+        flashOverlay.startAnimation(flashAnim);
+        
+        // Prevent dialog from being canceled
+        dialog.setCancelable(false);
+    }
+    
     private void checkAnswer() {
         if (selectedWord.isEmpty()) {
-            Toast.makeText(this, "Please select a word first", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.please_select_answer), Toast.LENGTH_SHORT).show();
             return;
         }
         
-        if (selectedWord.equals(currentExercise.getMissingWord())) {
-            Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
-            
-            // Move to the next exercise after a short delay
-            wordBankRecyclerView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (currentExerciseIndex < exerciseList.size() - 1) {
-                        loadExercise(currentExerciseIndex + 1);
-                    } else {
-                        // All exercises completed
-                        System.out.println("DEBUG: All sentence exercises completed for category: " + categoryName);
-                        Toast.makeText(CompleteSentenceActivity.this, 
-                                "All exercises completed! Well done!", Toast.LENGTH_LONG).show();
-                        
-                        // Mark the lesson as completed and unlock next unit/lesson
-                        markSentenceLessonCompleted();
-                    }
-                }
-            }, 1500);
-        } else {
-            Toast.makeText(this, "Incorrect, try again!", Toast.LENGTH_SHORT).show();
-        }
+        boolean isCorrect = selectedWord.equals(currentExercise.getMissingWord());
+        showAnswerFeedbackDialog(isCorrect, currentExercise.getMissingWord(), selectedWord);
     }
     
     private void markSentenceLessonCompleted() {

@@ -51,8 +51,13 @@
     <string name="finish_quiz">Finish Quiz</string>
     <string name="retry">Retry</string>
     <string name="correct">Correct!</string>
-    <string name="incorrect">Incorrect!</string>
+    <string name="incorrect">Incorrect</string>
     <string name="correct_answer_was">The correct answer was: %1$s</string>
+    <string name="your_answer_was">Your answer: %1$s</string>
+    <string name="keep_practicing">Keep practicing, you\'ll get it next time!</string>
+    <string name="well_done_correct">Well done! \"%1$s\" is correct.</string>
+    <string name="continue_button">Continue</string>
+    <string name="please_select_answer">Please select an answer</string>
     <string name="select_answer">Select the correct translation:</string>
     <string name="start_new_quiz">Start New Quiz</string>
     <string name="return_to_categories">Return to Categories</string>

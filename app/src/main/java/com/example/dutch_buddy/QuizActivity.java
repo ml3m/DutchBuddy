@@ -2,18 +2,26 @@ package com.example.dutch_buddy;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dutch_buddy.data.DatabaseHelper;
 import com.example.dutch_buddy.data.VocabularyItem;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -106,40 +114,19 @@ public class QuizActivity extends AppCompatActivity {
         submitButton.setOnClickListener(v -> {
             // Check if an answer is selected
             if (selectedCardOption == null) {
-                Toast.makeText(this, "Please select an answer", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.please_select_answer), Toast.LENGTH_SHORT).show();
                 return;
             }
             
             // Check if the answer is correct
             String selectedAnswer = getSelectedAnswerText();
+            String correctAnswer = quizItems.get(currentQuestionIndex).getEnglishTranslation();
             
-            if (selectedAnswer.equals(quizItems.get(currentQuestionIndex).getEnglishTranslation())) {
+            if (selectedAnswer.equals(correctAnswer)) {
                 correctAnswers++;
-                Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Incorrect. The correct answer is: " + 
-                        quizItems.get(currentQuestionIndex).getEnglishTranslation(), Toast.LENGTH_SHORT).show();
             }
             
-            // Move to the next question or finish the quiz
-            currentQuestionIndex++;
-            
-            if (currentQuestionIndex < quizItems.size()) {
-                // Show the next question
-                showQuestion(currentQuestionIndex);
-            } else {
-                // Update user stats
-                updateUserStatistics();
-                
-                // All questions answered, show results
-                Intent resultsIntent = new Intent(QuizActivity.this, QuizResultsActivity.class);
-                resultsIntent.putExtra("CATEGORY_NAME", category);
-                resultsIntent.putExtra("correctAnswers", correctAnswers);
-                resultsIntent.putExtra("totalQuestions", quizItems.size());
-                resultsIntent.putExtra("USER_ID", userId);
-                startActivity(resultsIntent);
-                finish();
-            }
+            showAnswerFeedbackDialog(selectedAnswer.equals(correctAnswer), correctAnswer, selectedAnswer);
         });
         
         // Set up back button
@@ -541,5 +528,105 @@ public class QuizActivity extends AppCompatActivity {
         Collections.shuffle(options);
         
         return options;
+    }
+    
+    private void showAnswerFeedbackDialog(boolean isCorrect, String correctAnswer, String selectedAnswer) {
+        // Create and show the custom dialog
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_answer_feedback);
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        
+        // Get dialog views
+        ImageView feedbackIcon = dialog.findViewById(R.id.feedbackIcon);
+        TextView feedbackTitle = dialog.findViewById(R.id.feedbackTitle);
+        TextView questionText = dialog.findViewById(R.id.questionText);
+        TextView yourAnswerText = dialog.findViewById(R.id.yourAnswerText);
+        TextView correctAnswerText = dialog.findViewById(R.id.correctAnswerText);
+        TextView successMessage = dialog.findViewById(R.id.successMessage);
+        TextView encouragementMessage = dialog.findViewById(R.id.encouragementMessage);
+        MaterialButton continueButton = dialog.findViewById(R.id.continueButton);
+        
+        // Get section views
+        View answerComparisonSection = dialog.findViewById(R.id.answerComparisonSection);
+        View successMessageSection = dialog.findViewById(R.id.successMessageSection);
+        
+        // Set the question text (Dutch word)
+        VocabularyItem currentItem = quizItems.get(currentQuestionIndex);
+        questionText.setText(currentItem.getDutchWord());
+        
+        // Set up the feedback content
+        feedbackIcon.setImageResource(isCorrect ? R.drawable.ic_correct_answer : R.drawable.ic_incorrect_answer);
+        feedbackTitle.setText(getString(isCorrect ? R.string.correct : R.string.incorrect));
+        feedbackTitle.setTextColor(getResources().getColor(isCorrect ? R.color.matcha_green : R.color.mocha_brown, null));
+        
+        if (isCorrect) {
+            // Show success section, hide comparison section
+            successMessageSection.setVisibility(View.VISIBLE);
+            answerComparisonSection.setVisibility(View.GONE);
+            
+            successMessage.setText(getString(R.string.well_done_correct, correctAnswer));
+            encouragementMessage.setText("Great job! Keep up the excellent work!");
+        } else {
+            // Show comparison section, hide success section
+            successMessageSection.setVisibility(View.GONE);
+            answerComparisonSection.setVisibility(View.VISIBLE);
+            
+            // Set the answers
+            yourAnswerText.setText(selectedAnswer);
+            correctAnswerText.setText(correctAnswer);
+            encouragementMessage.setText(getString(R.string.keep_practicing));
+        }
+        
+        // Set up continue button
+        continueButton.setBackgroundColor(getResources().getColor(isCorrect ? R.color.matcha_green : R.color.mocha_brown, null));
+        continueButton.setOnClickListener(v -> {
+            dialog.dismiss();
+            // Move to next question or finish quiz
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizItems.size()) {
+                showQuestion(currentQuestionIndex);
+            } else {
+                // Update user stats
+                updateUserStatistics();
+                
+                // Show results
+                Intent resultsIntent = new Intent(QuizActivity.this, QuizResultsActivity.class);
+                resultsIntent.putExtra("CATEGORY_NAME", category);
+                resultsIntent.putExtra("correctAnswers", correctAnswers);
+                resultsIntent.putExtra("totalQuestions", quizItems.size());
+                resultsIntent.putExtra("USER_ID", userId);
+                startActivity(resultsIntent);
+                finish();
+            }
+        });
+        
+        // Show flash animation before showing dialog
+        View flashOverlay = new View(this);
+        flashOverlay.setBackgroundColor(getResources().getColor(
+            isCorrect ? R.color.matcha_green : R.color.mocha_brown, null));
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT);
+        ((ViewGroup) getWindow().getDecorView().getRootView()).addView(flashOverlay, params);
+        
+        Animation flashAnim = AnimationUtils.loadAnimation(this, R.anim.feedback_flash);
+        flashAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+            
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                ((ViewGroup) flashOverlay.getParent()).removeView(flashOverlay);
+                dialog.show();
+            }
+            
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+        
+        flashOverlay.startAnimation(flashAnim);
+        
+        // Prevent dialog from being canceled
+        dialog.setCancelable(false);
     }
 } 
